@@ -7,16 +7,30 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+    console.log('Environment check:', {
+      hasOpenAI: !!openAIApiKey,
+      hasSupabaseUrl: !!supabaseUrl,
+      hasServiceKey: !!supabaseServiceKey
+    });
+
+    if (!openAIApiKey) {
+      throw new Error('OpenAI API key not configured');
+    }
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Supabase configuration missing');
+    }
+
     const { restaurant_id, file_url, file_type } = await req.json();
     
     console.log('Starting menu extraction for restaurant:', restaurant_id);
@@ -48,10 +62,10 @@ serve(async (req) => {
     try {
       if (file_type === 'application/pdf') {
         // For PDFs, we'll need to convert to image first or use a different approach
-        throw new Error('PDF extraction not yet implemented');
+        throw new Error('PDF extraction not yet implemented - please use image files for now');
       } else {
         // Handle image files
-        extractedData = await extractFromImage(file_url);
+        extractedData = await extractFromImage(file_url, openAIApiKey);
       }
 
       // Update extraction record with success
@@ -100,13 +114,13 @@ serve(async (req) => {
   }
 });
 
-async function extractFromImage(imageUrl: string) {
+async function extractFromImage(imageUrl: string, apiKey: string) {
   console.log('Extracting menu data from image:', imageUrl);
   
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${openAIApiKey}`,
+      'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
