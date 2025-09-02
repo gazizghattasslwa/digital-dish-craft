@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Save, Upload, Loader2, X, Image } from 'lucide-react';
 import { MenuTemplateSelector } from '@/components/MenuTemplateSelector';
+import { ColorCustomization } from '@/components/ColorCustomization';
 
 interface Restaurant {
   id: string;
@@ -28,17 +29,6 @@ interface RestaurantBrandingProps {
   restaurant: Restaurant;
   onUpdate: (restaurant: Restaurant) => void;
 }
-
-const colorPresets = [
-  { name: 'Orange', primary: '#f97316', secondary: '#fb923c' },
-  { name: 'Red', primary: '#dc2626', secondary: '#ef4444' },
-  { name: 'Blue', primary: '#2563eb', secondary: '#3b82f6' },
-  { name: 'Green', primary: '#16a34a', secondary: '#22c55e' },
-  { name: 'Purple', primary: '#9333ea', secondary: '#a855f7' },
-  { name: 'Pink', primary: '#db2777', secondary: '#ec4899' },
-  { name: 'Teal', primary: '#0d9488', secondary: '#14b8a6' },
-  { name: 'Yellow', primary: '#eab308', secondary: '#fbbf24' },
-];
 
 export function RestaurantBranding({ restaurant, onUpdate }: RestaurantBrandingProps) {
   const { toast } = useToast();
@@ -165,11 +155,11 @@ export function RestaurantBranding({ restaurant, onUpdate }: RestaurantBrandingP
     }
   };
 
-  const selectColorPreset = (preset: typeof colorPresets[0]) => {
+  const handleColorsChange = (primary: string, secondary: string) => {
     setFormData({
       ...formData,
-      primary_color: preset.primary,
-      secondary_color: preset.secondary,
+      primary_color: primary,
+      secondary_color: secondary,
     });
   };
 
@@ -190,6 +180,8 @@ export function RestaurantBranding({ restaurant, onUpdate }: RestaurantBrandingP
               <MenuTemplateSelector 
                 selectedTemplate={formData.menu_template}
                 onTemplateSelect={handleTemplateSelect}
+                primaryColor={formData.primary_color}
+                secondaryColor={formData.secondary_color}
               />
           </div>
         </CardContent>
@@ -261,94 +253,12 @@ export function RestaurantBranding({ restaurant, onUpdate }: RestaurantBrandingP
               </div>
             </div>
 
-            {/* Color Presets */}
-            <div className="space-y-4">
-              <Label>Color Presets</Label>
-              <div className="grid grid-cols-4 gap-3">
-                {colorPresets.map((preset) => (
-                  <button
-                    key={preset.name}
-                    type="button"
-                    onClick={() => selectColorPreset(preset)}
-                    className={`p-3 rounded-lg border-2 transition-all hover:scale-105 ${
-                      formData.primary_color === preset.primary
-                        ? 'border-foreground'
-                        : 'border-border hover:border-muted-foreground'
-                    }`}
-                  >
-                    <div className="flex space-x-2 mb-2">
-                      <div 
-                        className="w-4 h-4 rounded"
-                        style={{ backgroundColor: preset.primary }}
-                      />
-                      <div 
-                        className="w-4 h-4 rounded"
-                        style={{ backgroundColor: preset.secondary }}
-                      />
-                    </div>
-                    <span className="text-xs font-medium">{preset.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Custom Colors */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="primary_color">Primary Color</Label>
-                <div className="flex space-x-2">
-                  <Input
-                    type="color"
-                    value={formData.primary_color}
-                    onChange={(e) => setFormData({ ...formData, primary_color: e.target.value })}
-                    className="w-16 h-10"
-                  />
-                  <Input
-                    value={formData.primary_color}
-                    onChange={(e) => setFormData({ ...formData, primary_color: e.target.value })}
-                    placeholder="#f97316"
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="secondary_color">Secondary Color</Label>
-                <div className="flex space-x-2">
-                  <Input
-                    type="color"
-                    value={formData.secondary_color}
-                    onChange={(e) => setFormData({ ...formData, secondary_color: e.target.value })}
-                    className="w-16 h-10"
-                  />
-                  <Input
-                    value={formData.secondary_color}
-                    onChange={(e) => setFormData({ ...formData, secondary_color: e.target.value })}
-                    placeholder="#fb923c"
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Color Preview */}
-            <div className="bg-muted/50 p-4 rounded-lg">
-              <Label className="text-sm font-medium mb-3 block">Brand Preview</Label>
-              <div className="space-y-3">
-                <div 
-                  className="h-12 rounded-lg flex items-center justify-center text-white font-medium"
-                  style={{ backgroundColor: formData.primary_color }}
-                >
-                  Primary Color
-                </div>
-                <div 
-                  className="h-12 rounded-lg flex items-center justify-center text-white font-medium"
-                  style={{ backgroundColor: formData.secondary_color }}
-                >
-                  Secondary Color
-                </div>
-              </div>
-            </div>
+            {/* Color Customization */}
+            <ColorCustomization
+              primaryColor={formData.primary_color}
+              secondaryColor={formData.secondary_color}
+              onColorsChange={handleColorsChange}
+            />
 
             <div className="flex justify-end">
               <Button type="submit" disabled={loading || uploadingLogo}>

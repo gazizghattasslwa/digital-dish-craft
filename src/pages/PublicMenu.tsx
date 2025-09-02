@@ -501,43 +501,47 @@ export default function PublicMenu() {
           .select('language_code')
           .eq('restaurant_id', restaurantData.id)
           .eq('is_default', true)
-          .single();
+          .maybeSingle();
 
         const { data: currenciesData } = await supabase
           .from('restaurant_currencies')
           .select('currency_code')
           .eq('restaurant_id', restaurantData.id)
           .eq('is_default', true)
-          .single();
+          .maybeSingle();
 
         setSelectedLanguage(languagesData?.language_code || 'en');
         setSelectedCurrency(currenciesData?.currency_code || 'USD');
 
-        // Fetch menu items with translations
+        // Fetch menu items (simplified without translations for now)
         const { data: itemsData, error: itemsError } = await supabase
           .from('menu_items')
-          .select(`
-            *,
-            menu_item_translations(*)
-          `)
+          .select('*')
           .eq('restaurant_id', restaurantData.id)
           .eq('is_available', true)
           .order('display_order');
 
-        if (itemsError) throw itemsError;
+        if (itemsError) {
+          console.error('Items query error:', itemsError);
+          throw itemsError;
+        }
+        
+        console.log('Menu items fetched:', itemsData?.length || 0);
         setMenuItems(itemsData || []);
 
-        // Fetch categories with translations
+        // Fetch categories (simplified without translations for now)
         const { data: categoriesData, error: categoriesError } = await supabase
           .from('menu_categories')
-          .select(`
-            *,
-            menu_category_translations(*)
-          `)
+          .select('*')
           .eq('restaurant_id', restaurantData.id)
           .order('display_order');
 
-        if (categoriesError) throw categoriesError;
+        if (categoriesError) {
+          console.error('Categories query error:', categoriesError);
+          throw categoriesError;
+        }
+        
+        console.log('Categories fetched:', categoriesData?.length || 0);
         setCategories(categoriesData || []);
 
         console.log('Successfully loaded menu data');
@@ -619,6 +623,10 @@ export default function PublicMenu() {
 
 
   const renderTemplate = () => {
+    console.log('Rendering template:', restaurant.menu_template);
+    console.log('Menu items count:', menuItems.length);
+    console.log('Categories count:', categories.length);
+    
     const props = { restaurant, menuItems, categories };
     
     switch (restaurant.menu_template) {
@@ -628,6 +636,7 @@ export default function PublicMenu() {
         return <MenuTemplateElegant {...props} />;
       case 'casual':
         return <MenuTemplateCasual {...props} />;
+      case 'classic':
       default:
         return <MenuTemplateClassic {...props} />;
     }
