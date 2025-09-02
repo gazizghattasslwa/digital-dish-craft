@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { HeroSection } from "@/components/HeroSection";
 import { MenuBuilder, MenuItem } from "@/components/MenuBuilder";
 import { MenuPreview } from "@/components/MenuPreview";
@@ -9,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink, QrCode, Smartphone, Palette } from "lucide-react";
 
 const Index = () => {
+  const { user } = useAuth();
   const [showBuilder, setShowBuilder] = useState(false);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [restaurantName, setRestaurantName] = useState("");
@@ -16,6 +18,13 @@ const Index = () => {
     primary: "#ea580c",
     secondary: "#15803d"
   });
+
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (user) {
+      window.location.href = '/dashboard';
+    }
+  }, [user]);
 
   if (!showBuilder) {
     return (
@@ -75,7 +84,7 @@ const Index = () => {
                 onClick={() => setShowBuilder(true)}
                 className="text-lg px-8 py-6 bg-gradient-warm hover:shadow-warm transition-all duration-300 transform hover:scale-105"
               >
-                Start Building Your Menu
+                Try Menu Builder (Demo)
               </Button>
             </div>
           </div>
