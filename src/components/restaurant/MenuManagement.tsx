@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useUsageRestrictions } from '@/hooks/useUsageRestrictions';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Edit2, Trash2, Save, Upload, Loader2, FileText, Image as ImageIcon } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, Upload, Loader2, FileText, Image as ImageIcon, X } from 'lucide-react';
 import { QuickMenuImport } from './QuickMenuImport';
 import { toast } from 'sonner';
 
@@ -56,10 +56,12 @@ export function MenuManagement({
 }: MenuManagementProps) {
   const { canCreateMenuItem, restrictions } = useUsageRestrictions();
   const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [showCategoryDialog, setShowCategoryDialog] = useState(false);
   const [showItemDialog, setShowItemDialog] = useState(false);
   const [editingCategory, setEditingCategory] = useState<MenuCategory | null>(null);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [categoryForm, setCategoryForm] = useState({
     name: '',
@@ -71,9 +73,39 @@ export function MenuManagement({
     description: '',
     price: '',
     category_id: '',
+    image_url: '',
     is_special: false,
     is_available: true,
   });
+
+  // Image Upload
+  const handleImageUpload = async (file: File) => {
+    if (!file) return null;
+
+    setUploadingImage(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `menu-items/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('menu-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('menu-images')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error: any) {
+      toast.error('Error uploading image: ' + error.message);
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   // Category Management
   const handleCategorySubmit = async (e: React.FormEvent) => {
@@ -166,6 +198,7 @@ export function MenuManagement({
         price: parseFloat(itemForm.price),
         currency: restaurant.default_currency,
         category_id: itemForm.category_id || null,
+        image_url: itemForm.image_url || null,
         is_special: itemForm.is_special,
         is_available: itemForm.is_available,
       };
@@ -209,6 +242,7 @@ export function MenuManagement({
         description: '',
         price: '',
         category_id: '',
+        image_url: '',
         is_special: false,
         is_available: true,
       });
@@ -265,6 +299,7 @@ export function MenuManagement({
         description: item.description || '',
         price: item.price.toString(),
         category_id: item.category_id || '',
+        image_url: item.image_url || '',
         is_special: item.is_special,
         is_available: item.is_available,
       });
@@ -275,6 +310,7 @@ export function MenuManagement({
         description: '',
         price: '',
         category_id: '',
+        image_url: '',
         is_special: false,
         is_available: true,
       });
@@ -360,6 +396,15 @@ export function MenuManagement({
                 <Card key={item.id}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
+                      {item.image_url && (
+                        <div className="flex-shrink-0 mr-4">
+                          <img
+                            src={item.image_url}
+                            alt={item.name}
+                            className="w-16 h-16 object-cover rounded-lg border"
+                          />
+                        </div>
+                      )}
                       <div className="flex-1">
                         <div className="flex items-center space-x-2">
                           <h4 className="font-medium">{item.name}</h4>
@@ -538,6 +583,71 @@ export function MenuManagement({
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Image Upload */}
+            <div className="space-y-2">
+              <Label htmlFor="item-image">Item Photo (optional)</Label>
+              <div className="flex items-center gap-4">
+                {itemForm.image_url ? (
+                  <div className="relative">
+                    <img
+                      src={itemForm.image_url}
+                      alt="Menu item preview"
+                      className="w-20 h-20 object-cover rounded-lg border"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                      onClick={() => setItemForm({ ...itemForm, image_url: '' })}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center">
+                    <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const imageUrl = await handleImageUpload(file);
+                        if (imageUrl) {
+                          setItemForm({ ...itemForm, image_url: imageUrl });
+                        }
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploadingImage}
+                    className="w-full"
+                  >
+                    {uploadingImage ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-4 h-4 mr-2" />
+                        Upload Photo
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
             </div>
 
             <div className="flex items-center space-x-6">
