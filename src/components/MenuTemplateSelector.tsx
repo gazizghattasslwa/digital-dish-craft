@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Check, Eye, Palette, Layout, Utensils, Coffee } from 'lucide-react';
+import { MenuTemplatePreview } from '@/components/MenuTemplatePreview';
 
 interface MenuTemplate {
   id: string;
@@ -77,12 +78,16 @@ interface MenuTemplateSelectorProps {
   selectedTemplate: string;
   onTemplateSelect: (templateId: string) => void;
   onPreview?: (templateId: string) => void;
+  primaryColor?: string;
+  secondaryColor?: string;
 }
 
 export function MenuTemplateSelector({ 
   selectedTemplate, 
   onTemplateSelect, 
-  onPreview 
+  onPreview,
+  primaryColor = '#f97316',
+  secondaryColor = '#fb923c'
 }: MenuTemplateSelectorProps) {
   const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null);
 
@@ -133,17 +138,13 @@ export function MenuTemplateSelector({
             
             <CardContent className="space-y-4">
               {/* Template Preview */}
-              <div className="relative bg-muted/50 rounded-lg overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-background to-muted flex items-center justify-center">
-                  <div className="text-center space-y-2">
-                    <div className="text-2xl font-bold text-muted-foreground">
-                      {template.name}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Menu Preview
-                    </div>
-                  </div>
-                </div>
+              <div className="relative rounded-lg overflow-hidden">
+                <MenuTemplatePreview 
+                  template={template.id}
+                  primaryColor={primaryColor}
+                  secondaryColor={secondaryColor}
+                  isSelected={selectedTemplate === template.id}
+                />
                 {onPreview && (
                   <div className="absolute top-2 right-2">
                     <Button 
