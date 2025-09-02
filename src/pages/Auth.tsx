@@ -97,13 +97,32 @@ export default function Auth() {
   };
 
   const handleOAuthSignIn = async (provider: 'google' | 'facebook' | 'apple') => {
+    console.log('OAuth button clicked:', provider);
     setLoading(true);
-    const { error } = await signInWithOAuth(provider);
     
-    if (error) {
+    try {
+      const { error } = await signInWithOAuth(provider);
+      console.log('OAuth result:', { error });
+      
+      if (error) {
+        console.error('OAuth error:', error);
+        toast({
+          title: "Error with social sign in",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        console.log('OAuth success');
+        toast({
+          title: "Success!",
+          description: `Signing in with ${provider}...`,
+        });
+      }
+    } catch (err) {
+      console.error('OAuth catch error:', err);
       toast({
         title: "Error with social sign in",
-        description: error.message,
+        description: "An unexpected error occurred",
         variant: "destructive",
       });
     }
@@ -140,6 +159,10 @@ export default function Auth() {
             </CardTitle>
           </CardHeader>
           <CardContent>
+            {/* Debug info */}
+            <div className="text-sm text-gray-500 mb-4 p-2 bg-gray-100 rounded">
+              Debug: Auth page loaded. Current tab: {defaultTab}
+            </div>
             <Tabs defaultValue={defaultTab} className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin">Sign In</TabsTrigger>
