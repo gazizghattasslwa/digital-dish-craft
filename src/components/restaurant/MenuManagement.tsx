@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
 import { Plus, Edit2, Trash2, Save, Upload, Loader2, FileText, Image as ImageIcon } from 'lucide-react';
+import { QuickMenuImport } from './QuickMenuImport';
 
 interface Restaurant {
   id: string;
@@ -303,29 +304,18 @@ export function MenuManagement({
     setShowItemDialog(true);
   };
 
+  const handleImportComplete = (newCategories: MenuCategory[], newItems: MenuItem[]) => {
+    onCategoriesUpdate([...categories, ...newCategories]);
+    onMenuItemsUpdate([...menuItems, ...newItems]);
+  };
+
   return (
     <div className="space-y-6">
       {/* Upload Options */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Menu Import</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex space-x-4">
-            <Button variant="outline" className="flex-1">
-              <FileText className="w-4 h-4 mr-2" />
-              Upload PDF Menu
-            </Button>
-            <Button variant="outline" className="flex-1">
-              <ImageIcon className="w-4 h-4 mr-2" />
-              Upload Menu Images
-            </Button>
-          </div>
-          <p className="text-sm text-muted-foreground mt-2">
-            Upload your existing menu and our AI will extract items and categories automatically.
-          </p>
-        </CardContent>
-      </Card>
+      <QuickMenuImport 
+        restaurant={restaurant} 
+        onImportComplete={handleImportComplete}
+      />
 
       <Tabs defaultValue="categories" className="space-y-4">
         <TabsList>

@@ -1,1 +1,16 @@
 project_id = "ohutaeezxljgdrtjyxcq"
+
+[api]
+enabled = true
+port = 54321
+
+[auth]
+enabled = true
+port = 9999
+
+[db]
+enabled = true
+port = 54322
+
+[functions.extract-menu]
+verify_jwt = true
