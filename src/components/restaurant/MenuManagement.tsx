@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useUsageRestrictions } from '@/hooks/useUsageRestrictions';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,9 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit2, Trash2, Save, Upload, Loader2, FileText, Image as ImageIcon } from 'lucide-react';
 import { QuickMenuImport } from './QuickMenuImport';
+import { toast } from 'sonner';
 
 interface Restaurant {
   id: string;
@@ -53,7 +54,7 @@ export function MenuManagement({
   onMenuItemsUpdate, 
   onCategoriesUpdate 
 }: MenuManagementProps) {
-  const { toast } = useToast();
+  const { canCreateMenuItem, restrictions } = useUsageRestrictions();
   const [loading, setLoading] = useState(false);
   const [showCategoryDialog, setShowCategoryDialog] = useState(false);
   const [showItemDialog, setShowItemDialog] = useState(false);
@@ -115,20 +116,13 @@ export function MenuManagement({
         onCategoriesUpdate([...categories, data]);
       }
 
-      toast({
-        title: editingCategory ? "Category updated" : "Category created",
-        description: "Menu category has been saved successfully.",
-      });
+      toast.success(editingCategory ? "Category updated successfully" : "Category created successfully");
 
       setShowCategoryDialog(false);
       setCategoryForm({ name: '', description: '' });
       setEditingCategory(null);
     } catch (error: any) {
-      toast({
-        title: "Error saving category",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error('Error saving category: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -154,16 +148,9 @@ export function MenuManagement({
       );
       onMenuItemsUpdate(updatedItems);
 
-      toast({
-        title: "Category deleted",
-        description: "Menu category has been removed.",
-      });
+      toast.success("Category deleted successfully");
     } catch (error: any) {
-      toast({
-        title: "Error deleting category",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error('Error deleting category: ' + error.message);
     }
   };
 
@@ -214,10 +201,7 @@ export function MenuManagement({
         onMenuItemsUpdate([...menuItems, data]);
       }
 
-      toast({
-        title: editingItem ? "Item updated" : "Item created",
-        description: "Menu item has been saved successfully.",
-      });
+      toast.success(editingItem ? "Menu item updated successfully" : "Menu item created successfully");
 
       setShowItemDialog(false);
       setItemForm({
@@ -230,11 +214,7 @@ export function MenuManagement({
       });
       setEditingItem(null);
     } catch (error: any) {
-      toast({
-        title: "Error saving item",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error('Error saving item: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -252,16 +232,9 @@ export function MenuManagement({
       const updatedItems = menuItems.filter(item => item.id !== itemId);
       onMenuItemsUpdate(updatedItems);
 
-      toast({
-        title: "Item deleted",
-        description: "Menu item has been removed.",
-      });
+      toast.success("Menu item deleted successfully");
     } catch (error: any) {
-      toast({
-        title: "Error deleting item",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error('Error deleting item: ' + error.message);
     }
   };
 
@@ -280,6 +253,11 @@ export function MenuManagement({
   };
 
   const openItemDialog = (item?: MenuItem) => {
+    if (!item && !canCreateMenuItem) {
+      toast.error(`You've reached the limit of ${restrictions.maxMenuItems} menu items for your plan. Upgrade to add more items.`);
+      return;
+    }
+
     if (item) {
       setEditingItem(item);
       setItemForm({
@@ -369,7 +347,7 @@ export function MenuManagement({
         <TabsContent value="items" className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold">Menu Items</h3>
-            <Button onClick={() => openItemDialog()}>
+            <Button onClick={() => openItemDialog()} disabled={!canCreateMenuItem}>
               <Plus className="w-4 h-4 mr-2" />
               Add Item
             </Button>

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUsageRestrictions } from '@/hooks/useUsageRestrictions';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface CreateRestaurantDialogProps {
   open: boolean;
@@ -30,7 +31,7 @@ export function CreateRestaurantDialog({
   onRestaurantCreated 
 }: CreateRestaurantDialogProps) {
   const { user } = useAuth();
-  const { toast } = useToast();
+  const { canCreateRestaurant, restrictions } = useUsageRestrictions();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -45,6 +46,11 @@ export function CreateRestaurantDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
+
+    if (!canCreateRestaurant) {
+      toast.error(`You've reached the limit of ${restrictions.maxRestaurants} restaurant${restrictions.maxRestaurants > 1 ? 's' : ''} for your plan. Upgrade to create more restaurants.`);
+      return;
+    }
 
     setLoading(true);
 
@@ -71,10 +77,7 @@ export function CreateRestaurantDialog({
 
       if (error) throw error;
 
-      toast({
-        title: "Restaurant created!",
-        description: "Your restaurant has been created successfully.",
-      });
+      toast.success('Restaurant created successfully!');
 
       // Reset form
       setFormData({
@@ -89,11 +92,7 @@ export function CreateRestaurantDialog({
 
       onRestaurantCreated();
     } catch (error: any) {
-      toast({
-        title: "Error creating restaurant",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error('Error creating restaurant: ' + error.message);
     } finally {
       setLoading(false);
     }

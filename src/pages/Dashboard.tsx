@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useUsageRestrictions } from '@/hooks/useUsageRestrictions';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Plus, Store, Menu as MenuIcon, Users, LogOut, Settings } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
-import { useNavigate } from 'react-router-dom';
+import { Badge } from '@/components/ui/badge';
+import { Plus, Store, Menu as MenuIcon, Users, LogOut, Settings, Crown, Zap } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { CreateRestaurantDialog } from '@/components/CreateRestaurantDialog';
+import { toast } from 'sonner';
 
 interface Restaurant {
   id: string;
@@ -21,10 +24,11 @@ interface Restaurant {
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
+  const { subscriptionTier, subscribed } = useSubscription();
+  const { usageStats, restrictions, canCreateRestaurant } = useUsageRestrictions();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,11 +48,7 @@ export default function Dashboard() {
       if (error) throw error;
       setRestaurants(data || []);
     } catch (error: any) {
-      toast({
-        title: "Error loading restaurants",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error('Error loading restaurants: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -57,6 +57,14 @@ export default function Dashboard() {
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
+  };
+
+  const handleCreateRestaurant = () => {
+    if (!canCreateRestaurant) {
+      toast.error(`You've reached the limit of ${restrictions.maxRestaurants} restaurant${restrictions.maxRestaurants > 1 ? 's' : ''} for your plan.`);
+      return;
+    }
+    setShowCreateDialog(true);
   };
 
   const handleRestaurantCreated = () => {
@@ -88,9 +96,16 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <Button variant="ghost" size="sm">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
+              <Badge variant={subscriptionTier === 'free' ? 'secondary' : 'default'} className="flex items-center gap-1">
+                {subscriptionTier === 'agency' && <Crown className="w-3 h-3" />}
+                {subscriptionTier === 'premium' && <Zap className="w-3 h-3" />}
+                {subscriptionTier.charAt(0).toUpperCase() + subscriptionTier.slice(1)} Plan
+              </Badge>
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/subscription">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Subscription
+                </Link>
               </Button>
               <Button variant="ghost" size="sm" onClick={handleSignOut}>
                 <LogOut className="w-4 h-4 mr-2" />
@@ -106,9 +121,12 @@ export default function Dashboard() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold text-foreground mb-2">Your Restaurants</h2>
-            <p className="text-muted-foreground">Manage your digital menus and restaurant information</p>
+            <p className="text-muted-foreground">
+              Manage your digital menus and restaurant information 
+              ({usageStats.restaurantCount}/{restrictions.maxRestaurants === Infinity ? '∞' : restrictions.maxRestaurants} restaurants, {usageStats.menuItemCount}/{restrictions.maxMenuItems === Infinity ? '∞' : restrictions.maxMenuItems} menu items)
+            </p>
           </div>
-          <Button onClick={() => setShowCreateDialog(true)} className="shadow-warm">
+          <Button onClick={handleCreateRestaurant} className="shadow-warm" disabled={!canCreateRestaurant}>
             <Plus className="w-4 h-4 mr-2" />
             Add Restaurant
           </Button>
@@ -123,7 +141,7 @@ export default function Dashboard() {
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Get started by creating your first restaurant. You can add multiple restaurants and manage their menus independently.
             </p>
-            <Button onClick={() => setShowCreateDialog(true)} size="lg" className="shadow-warm">
+            <Button onClick={handleCreateRestaurant} size="lg" className="shadow-warm" disabled={!canCreateRestaurant}>
               <Plus className="w-4 h-4 mr-2" />
               Create Your First Restaurant
             </Button>
