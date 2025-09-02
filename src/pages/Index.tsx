@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { useAuth } from "@/contexts/AuthContext";
 import { EnhancedHeroSection } from "@/components/enhanced/EnhancedHeroSection";
 import { FeaturesSection } from "@/components/enhanced/FeaturesSection";
+import { PricingSection } from "@/components/enhanced/PricingSection";
 import { SEOContent } from "@/components/enhanced/SEOContent";
 import { MenuBuilder, MenuItem } from "@/components/MenuBuilder";
 import { MenuPreview } from "@/components/MenuPreview";
@@ -70,6 +71,7 @@ const Index = () => {
         <div className="min-h-screen bg-gradient-surface">
           <EnhancedHeroSection />
           <FeaturesSection />
+          <PricingSection />
           <SEOContent />
           
           {/* Footer */}
@@ -78,7 +80,7 @@ const Index = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div className="col-span-1 md:col-span-2">
                   <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-10 h-10 bg-gradient-warm rounded-xl flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center">
                       <span className="text-white font-bold text-lg">M</span>
                     </div>
                     <span className="text-2xl font-bold">MenuCraft</span>
@@ -131,7 +133,7 @@ const Index = () => {
           <div className="container-fluid py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-4">
-                <div className="w-10 h-10 bg-gradient-warm rounded-xl flex items-center justify-center shadow-soft">
+                <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center shadow-soft">
                   <span className="text-white font-bold text-lg">M</span>
                 </div>
                 <div>

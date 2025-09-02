@@ -72,7 +72,7 @@ export const FeaturesSection = () => {
   return (
     <>
       {/* Main Features Section */}
-      <section className="section-padding bg-gradient-surface">
+      <section id="features" className="section-padding bg-gradient-surface">
         <div className="container-fluid">
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
@@ -92,7 +92,7 @@ export const FeaturesSection = () => {
             {mainFeatures.map((feature, index) => (
               <Card key={index} className="group shadow-card hover:shadow-warm transition-all duration-300 border-0 bg-card/50 backdrop-blur-sm hover-lift">
                 <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-gradient-warm rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-soft group-hover:shadow-glow transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-soft group-hover:shadow-glow transition-all duration-300">
                     <div className="text-white">
                       {feature.icon}
                     </div>
@@ -145,7 +145,7 @@ export const FeaturesSection = () => {
                 {stats.map((stat, index) => (
                   <Card key={index} className="text-center p-6 shadow-card hover:shadow-warm transition-all duration-300 hover-lift">
                     <CardContent className="p-0">
-                      <div className="w-12 h-12 bg-gradient-warm rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4">
                         <div className="text-white">
                           {stat.icon}
                         </div>

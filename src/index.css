@@ -8,87 +8,87 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Modern restaurant-themed color palette with improved contrast */
+    /* Modern minimalist color palette - elegant and simple */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 224 71% 4%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 224 71% 4%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 224 71% 4%;
 
-    /* Vibrant primary - modern orange-red */
-    --primary: 20 90% 56%;
-    --primary-foreground: 0 0% 98%;
-    --primary-hover: 20 90% 50%;
-    --primary-light: 20 95% 85%;
+    /* Clean primary - modern deep blue */
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --primary-hover: 221 83% 47%;
+    --primary-light: 221 83% 95%;
 
-    /* Modern secondary - sophisticated teal */
-    --secondary: 210 40% 92%;
+    /* Elegant secondary - soft gray */
+    --secondary: 210 40% 96%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    /* Refined neutrals with better contrast */
+    /* Refined neutrals */
     --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    /* Premium accent - golden yellow */
-    --accent: 45 93% 47%;
-    --accent-foreground: 222.2 84% 4.9%;
+    /* Subtle accent - calm teal */
+    --accent: 197 37% 96%;
+    --accent-foreground: 185 57% 32%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 20 90% 56%;
+    --ring: 221 83% 53%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary: 221 83% 53%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 20 90% 56%;
+    --sidebar-ring: 221 83% 53%;
 
-    /* Enhanced gradients with modern colors */
-    --gradient-warm: linear-gradient(135deg, hsl(20 90% 56%) 0%, hsl(45 93% 47%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(20 90% 56%) 0%, hsl(25 85% 53%) 50%, hsl(45 93% 47%) 100%);
+    /* Clean gradients - subtle and modern */
+    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(221 83% 47%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(224 71% 4%) 0%, hsl(221 83% 53%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 40% 98%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(45 93% 47%) 0%, hsl(50 85% 60%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(197 37% 96%) 0%, hsl(185 57% 92%) 100%);
     --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 40% 99%) 100%);
     
-    /* Modern shadows with depth */
-    --shadow-warm: 0 20px 40px -12px hsl(20 90% 56% / 0.25);
-    --shadow-card: 0 4px 25px -5px hsl(222.2 84% 4.9% / 0.08);
-    --shadow-menu-item: 0 8px 30px -6px hsl(20 90% 56% / 0.18);
-    --shadow-glow: 0 0 0 1px hsl(20 90% 56% / 0.05), 0 0 40px hsl(20 90% 56% / 0.1);
-    --shadow-soft: 0 2px 10px hsl(222.2 84% 4.9% / 0.04);
+    /* Subtle shadows */
+    --shadow-primary: 0 4px 20px -4px hsl(221 83% 53% / 0.25);
+    --shadow-card: 0 2px 10px -2px hsl(224 71% 4% / 0.08);
+    --shadow-menu-item: 0 4px 15px -3px hsl(221 83% 53% / 0.15);
+    --shadow-glow: 0 0 0 1px hsl(221 83% 53% / 0.05), 0 0 20px hsl(221 83% 53% / 0.1);
+    --shadow-soft: 0 1px 3px hsl(224 71% 4% / 0.04);
     
-    /* Animation timing improvements */
+    /* Smooth animations */
     --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-spring: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .dark {
-    /* Modern dark mode with better contrast */
-    --background: 222.2 84% 4.9%;
+    /* Modern dark mode - clean and elegant */
+    --background: 224 71% 4%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 224 71% 4%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 224 71% 4%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 20 90% 56%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --primary-hover: 20 90% 60%;
-    --primary-light: 20 95% 15%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 224 71% 4%;
+    --primary-hover: 221 83% 57%;
+    --primary-light: 221 83% 15%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -96,7 +96,7 @@ All colors MUST be HSL.
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 45 93% 47%;
+    --accent: 185 57% 32%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -104,28 +104,28 @@ All colors MUST be HSL.
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 20 90% 56%;
+    --ring: 221 83% 53%;
 
-    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-background: 224 71% 4%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 20 90% 56%;
-    --sidebar-primary-foreground: 222.2 84% 4.9%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 224 71% 4%;
     --sidebar-accent: 217.2 32.6% 17.5%;
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 217.2 32.6% 17.5%;
-    --sidebar-ring: 20 90% 56%;
+    --sidebar-ring: 221 83% 53%;
 
-    --gradient-warm: linear-gradient(135deg, hsl(20 90% 56%) 0%, hsl(45 93% 47%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(20 90% 56%) 0%, hsl(25 85% 53%) 50%, hsl(45 93% 47%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(222.2 84% 4.9%) 0%, hsl(217.2 32.6% 17.5%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(45 93% 47%) 0%, hsl(50 85% 60%) 100%);
-    --gradient-surface: linear-gradient(180deg, hsl(222.2 84% 4.9%) 0%, hsl(217.2 32.6% 10%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(221 83% 47%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(224 71% 4%) 0%, hsl(221 83% 53%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(224 71% 4%) 0%, hsl(217.2 32.6% 17.5%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(185 57% 32%) 0%, hsl(185 57% 25%) 100%);
+    --gradient-surface: linear-gradient(180deg, hsl(224 71% 4%) 0%, hsl(217.2 32.6% 10%) 100%);
     
-    --shadow-warm: 0 20px 40px -12px hsl(20 90% 56% / 0.4);
-    --shadow-card: 0 4px 25px -5px hsl(0 0% 0% / 0.3);
-    --shadow-menu-item: 0 8px 30px -6px hsl(20 90% 56% / 0.3);
-    --shadow-glow: 0 0 0 1px hsl(20 90% 56% / 0.1), 0 0 40px hsl(20 90% 56% / 0.2);
-    --shadow-soft: 0 2px 10px hsl(0 0% 0% / 0.2);
+    --shadow-primary: 0 4px 20px -4px hsl(221 83% 53% / 0.4);
+    --shadow-card: 0 2px 10px -2px hsl(0 0% 0% / 0.3);
+    --shadow-menu-item: 0 4px 15px -3px hsl(221 83% 53% / 0.3);
+    --shadow-glow: 0 0 0 1px hsl(221 83% 53% / 0.1), 0 0 20px hsl(221 83% 53% / 0.2);
+    --shadow-soft: 0 1px 3px hsl(0 0% 0% / 0.2);
   }
 }
 
@@ -141,8 +141,8 @@ All colors MUST be HSL.
 
 @layer components {
   /* Background utilities */
-  .gradient-warm {
-    background: var(--gradient-warm);
+  .gradient-primary {
+    background: var(--gradient-primary);
   }
   
   .gradient-hero {
@@ -162,8 +162,8 @@ All colors MUST be HSL.
   }
   
   /* Shadow utilities */
-  .shadow-warm {
-    box-shadow: var(--shadow-warm);
+  .shadow-primary {
+    box-shadow: var(--shadow-primary);
   }
   
   .shadow-card {
@@ -205,11 +205,11 @@ All colors MUST be HSL.
   }
   
   .text-gradient {
-    @apply bg-gradient-warm bg-clip-text text-transparent;
+    @apply bg-gradient-primary bg-clip-text text-transparent;
   }
   
   .btn-primary {
-    @apply bg-gradient-warm text-primary-foreground shadow-warm hover:shadow-glow transition-spring;
+    @apply bg-primary text-primary-foreground shadow-primary hover:shadow-glow transition-spring hover:bg-primary-hover;
   }
   
   /* Mobile-first responsive utilities */

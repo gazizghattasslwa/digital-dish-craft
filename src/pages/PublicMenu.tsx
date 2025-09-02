@@ -464,14 +464,16 @@ export default function PublicMenu() {
 
         console.log('Restaurant query result:', { restaurantData, restaurantError });
 
-        if (restaurantError) {
-          if (restaurantError.code === 'PGRST116') {
-            setError('Menu not found');
-          } else {
-            throw restaurantError;
-          }
-          return;
+      if (restaurantError) {
+        console.log('Restaurant query error:', restaurantError);
+        if (restaurantError.code === 'PGRST116') {
+          console.log('Restaurant not found, setting error');
+          setError('Menu not found');
+        } else {
+          throw restaurantError;
         }
+        return;
+      }
 
         setRestaurant(restaurantData);
 

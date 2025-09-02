@@ -66,14 +66,14 @@ export default {
 				}
 			},
 			backgroundImage: {
-				'gradient-warm': 'var(--gradient-warm)',
+				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-hero': 'var(--gradient-hero)',
 				'gradient-card': 'var(--gradient-card)',
 				'gradient-accent': 'var(--gradient-accent)',
 				'gradient-surface': 'var(--gradient-surface)'
 			},
 			boxShadow: {
-				'warm': 'var(--shadow-warm)',
+				'primary': 'var(--shadow-primary)',
 				'card': 'var(--shadow-card)',
 				'menu-item': 'var(--shadow-menu-item)',
 				'glow': 'var(--shadow-glow)',

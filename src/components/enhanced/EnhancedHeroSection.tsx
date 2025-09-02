@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Smartphone, Zap, Palette, Star, Play, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { MobileNav } from "./MobileNav";
 import heroImage from "@/assets/hero-restaurant-menu.jpg";
 
 export const EnhancedHeroSection = () => {
@@ -39,14 +40,30 @@ export const EnhancedHeroSection = () => {
       <nav className="absolute top-0 left-0 right-0 z-20 p-4 sm:p-6">
         <div className="container-fluid flex justify-between items-center">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-warm rounded-lg flex items-center justify-center shadow-glow">
+            <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow">
               <span className="text-white font-bold text-lg">M</span>
             </div>
             <div className="text-xl sm:text-2xl font-bold text-white">
               MenuCraft
             </div>
           </div>
-          <div className="flex gap-2 sm:gap-4">
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex gap-2 sm:gap-4 items-center">
+            <Button 
+              variant="ghost" 
+              className="text-white hover:bg-white/10 text-sm sm:text-base transition-spring"
+              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Features
+            </Button>
+            <Button 
+              variant="ghost" 
+              className="text-white hover:bg-white/10 text-sm sm:text-base transition-spring"
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Pricing
+            </Button>
             {user ? (
               <Button 
                 variant="ghost" 
@@ -73,6 +90,9 @@ export const EnhancedHeroSection = () => {
               </>
             )}
           </div>
+
+          {/* Mobile Navigation */}
+          <MobileNav />
         </div>
       </nav>
       
@@ -128,9 +148,10 @@ export const EnhancedHeroSection = () => {
               variant="outline" 
               size="lg" 
               className="text-lg px-8 py-6 border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-spring backdrop-blur-sm"
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Play className="mr-2 h-5 w-5" />
-              Watch Demo
+              View Pricing
             </Button>
           </div>
           
@@ -154,7 +175,7 @@ export const EnhancedHeroSection = () => {
               }
             ].map((feature, index) => (
               <div key={index} className="glass-card rounded-xl p-6 hover-lift backdrop-blur-md">
-                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 shadow-soft">
+                <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-soft">
                   <div className="text-white">
                     {feature.icon}
                   </div>
