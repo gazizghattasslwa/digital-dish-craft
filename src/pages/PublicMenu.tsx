@@ -447,7 +447,12 @@ export default function PublicMenu() {
 
   useEffect(() => {
     const fetchMenuData = async () => {
-      if (!slug) return;
+      if (!slug) {
+        console.log('No slug provided');
+        return;
+      }
+
+      console.log('Fetching menu data for slug:', slug);
 
       try {
         // Fetch restaurant by slug
@@ -456,6 +461,8 @@ export default function PublicMenu() {
           .select('*')
           .eq('slug', slug)
           .single();
+
+        console.log('Restaurant query result:', { restaurantData, restaurantError });
 
         if (restaurantError) {
           if (restaurantError.code === 'PGRST116') {
@@ -475,6 +482,7 @@ export default function PublicMenu() {
           .eq('restaurant_id', restaurantData.id)
           .order('display_order', { ascending: true });
 
+        console.log('Categories query result:', { categoriesData, categoriesError });
         if (categoriesError) throw categoriesError;
         setCategories(categoriesData || []);
 
@@ -486,10 +494,14 @@ export default function PublicMenu() {
           .eq('is_available', true)
           .order('display_order', { ascending: true });
 
+        console.log('Menu items query result:', { itemsData, itemsError });
         if (itemsError) throw itemsError;
         setMenuItems(itemsData || []);
 
+        console.log('Successfully loaded menu data');
+
       } catch (error: any) {
+        console.error('Error fetching menu data:', error);
         setError(error.message);
       } finally {
         setLoading(false);
