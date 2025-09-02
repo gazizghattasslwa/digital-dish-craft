@@ -28,11 +28,13 @@ export default {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
 					hover: 'hsl(var(--primary-hover))',
-					light: 'hsl(var(--primary-light))'
+					light: 'hsl(var(--primary-light))',
+					dark: 'hsl(var(--primary-dark))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					foreground: 'hsl(var(--secondary-foreground))',
+					dark: 'hsl(var(--secondary-dark))'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -44,7 +46,8 @@ export default {
 				},
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					foreground: 'hsl(var(--accent-foreground))',
+					light: 'hsl(var(--accent-light))'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -67,22 +70,32 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-secondary': 'var(--gradient-secondary)',
 				'gradient-hero': 'var(--gradient-hero)',
 				'gradient-card': 'var(--gradient-card)',
 				'gradient-accent': 'var(--gradient-accent)',
-				'gradient-surface': 'var(--gradient-surface)'
+				'gradient-surface': 'var(--gradient-surface)',
+				'gradient-glass': 'var(--gradient-glass)',
+				'gradient-aurora': 'var(--gradient-aurora)'
 			},
 			boxShadow: {
 				'primary': 'var(--shadow-primary)',
+				'secondary': 'var(--shadow-secondary)',
+				'accent': 'var(--shadow-accent)',
 				'card': 'var(--shadow-card)',
-				'menu-item': 'var(--shadow-menu-item)',
+				'floating': 'var(--shadow-floating)',
 				'glow': 'var(--shadow-glow)',
-				'soft': 'var(--shadow-soft)'
+				'premium': 'var(--shadow-premium)',
+				'glass': 'var(--shadow-glass)'
+			},
+			maxWidth: {
+				'8xl': '88rem'
 			},
 			transitionTimingFunction: {
 				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
 				'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-				'spring': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+				'spring': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+				'elastic': 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
