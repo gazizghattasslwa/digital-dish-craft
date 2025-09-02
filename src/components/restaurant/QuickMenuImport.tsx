@@ -47,6 +47,8 @@ export function QuickMenuImport({ restaurant, onImportComplete }: QuickMenuImpor
     const file = event.target.files?.[0];
     if (!file) return;
 
+    console.log('File selected:', file.name, file.type, file.size);
+
     // Validate file type
     if (fileType === 'image' && !file.type.startsWith('image/')) {
       toast({
@@ -59,7 +61,7 @@ export function QuickMenuImport({ restaurant, onImportComplete }: QuickMenuImpor
 
     if (fileType === 'pdf' && file.type !== 'application/pdf') {
       toast({
-        title: "Invalid file type",
+        title: "Invalid file type", 
         description: "Please select a PDF file",
         variant: "destructive",
       });
@@ -69,13 +71,19 @@ export function QuickMenuImport({ restaurant, onImportComplete }: QuickMenuImpor
     setUploading(true);
 
     try {
+      console.log('Starting file upload...');
+      
       // Upload file to Supabase Storage
       const fileExt = file.name.split('.').pop();
       const fileName = `${restaurant.id}/${Date.now()}.${fileExt}`;
       
+      console.log('Uploading to path:', fileName);
+      
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('restaurant-files')
         .upload(fileName, file);
+
+      console.log('Upload result:', { uploadData, uploadError });
 
       if (uploadError) {
         throw uploadError;
@@ -87,6 +95,7 @@ export function QuickMenuImport({ restaurant, onImportComplete }: QuickMenuImpor
         .getPublicUrl(fileName);
 
       const fileUrl = urlData.publicUrl;
+      console.log('File URL:', fileUrl);
 
       toast({
         title: "File uploaded",
@@ -96,6 +105,8 @@ export function QuickMenuImport({ restaurant, onImportComplete }: QuickMenuImpor
       setUploading(false);
       setExtracting(true);
 
+      console.log('Calling extract-menu function...');
+      
       // Call extraction edge function
       const { data: extractionResult, error: extractionError } = await supabase.functions
         .invoke('extract-menu', {
@@ -105,6 +116,8 @@ export function QuickMenuImport({ restaurant, onImportComplete }: QuickMenuImpor
             file_type: file.type
           }
         });
+
+      console.log('Extraction result:', { extractionResult, extractionError });
 
       if (extractionError) {
         throw extractionError;
