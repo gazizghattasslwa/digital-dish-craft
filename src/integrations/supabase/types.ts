@@ -49,6 +49,36 @@ export type Database = {
           },
         ]
       }
+      menu_category_translations: {
+        Row: {
+          category_id: string
+          created_at: string
+          description: string | null
+          id: string
+          language_code: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          language_code: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          language_code?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       menu_extractions: {
         Row: {
           created_at: string
@@ -89,6 +119,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      menu_item_translations: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          language_code: string
+          menu_item_id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          language_code: string
+          menu_item_id: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          language_code?: string
+          menu_item_id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       menu_items: {
         Row: {
@@ -180,6 +240,69 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      restaurant_currencies: {
+        Row: {
+          created_at: string
+          currency_code: string
+          currency_name: string
+          exchange_rate: number | null
+          id: string
+          is_default: boolean | null
+          restaurant_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency_code: string
+          currency_name: string
+          exchange_rate?: number | null
+          id?: string
+          is_default?: boolean | null
+          restaurant_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency_code?: string
+          currency_name?: string
+          exchange_rate?: number | null
+          id?: string
+          is_default?: boolean | null
+          restaurant_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      restaurant_languages: {
+        Row: {
+          created_at: string
+          id: string
+          is_default: boolean | null
+          language_code: string
+          language_name: string
+          restaurant_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_default?: boolean | null
+          language_code: string
+          language_name: string
+          restaurant_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_default?: boolean | null
+          language_code?: string
+          language_name?: string
+          restaurant_id?: string
+          updated_at?: string
         }
         Relationships: []
       }

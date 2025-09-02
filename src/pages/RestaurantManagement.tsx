@@ -9,6 +9,8 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, Eye, QrCode, ExternalLink } from 'lucide-react';
 import { RestaurantDetails } from '@/components/restaurant/RestaurantDetails';
 import { RestaurantBranding } from '@/components/restaurant/RestaurantBranding';
+import { LanguageManagement } from '@/components/restaurant/LanguageManagement';
+import { CurrencyManagement } from '@/components/restaurant/CurrencyManagement';
 import { MenuManagement } from '@/components/restaurant/MenuManagement';
 import { MenuPreview } from '@/components/MenuPreview';
 import { QRCodeGenerator } from '@/components/QRCodeGenerator';
@@ -235,9 +237,11 @@ export default function RestaurantManagement() {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6">
             <TabsTrigger value="details" className="text-xs sm:text-sm">Details</TabsTrigger>
             <TabsTrigger value="branding" className="text-xs sm:text-sm">Branding</TabsTrigger>
+            <TabsTrigger value="languages" className="text-xs sm:text-sm">Languages</TabsTrigger>
+            <TabsTrigger value="currencies" className="text-xs sm:text-sm">Currencies</TabsTrigger>
             <TabsTrigger value="menu" className="text-xs sm:text-sm">Menu</TabsTrigger>
             <TabsTrigger value="preview" className="text-xs sm:text-sm">Preview</TabsTrigger>
           </TabsList>
@@ -254,6 +258,14 @@ export default function RestaurantManagement() {
               restaurant={restaurant}
               onUpdate={handleRestaurantUpdate}
             />
+          </TabsContent>
+
+          <TabsContent value="languages" className="space-y-6">
+            <LanguageManagement restaurantId={id!} />
+          </TabsContent>
+
+          <TabsContent value="currencies" className="space-y-6">
+            <CurrencyManagement restaurantId={id!} />
           </TabsContent>
 
           <TabsContent value="menu" className="space-y-6">

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { MapPin, Phone, Globe, Clock, Star, Coffee, Utensils } from 'lucide-react';
+import { LanguageCurrencySelector } from "@/components/restaurant/LanguageCurrencySelector";
 
 interface Restaurant {
   id: string;
@@ -442,6 +443,9 @@ export default function PublicMenu() {
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [categories, setCategories] = useState<MenuCategory[]>([]);
+  const [translations, setTranslations] = useState<any>({});
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('');
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -491,28 +495,50 @@ export default function PublicMenu() {
 
         setRestaurant(restaurantData);
 
-        // Fetch categories
-        const { data: categoriesData, error: categoriesError } = await supabase
-          .from('menu_categories')
-          .select('*')
+        // Set default language and currency
+        const { data: languagesData } = await supabase
+          .from('restaurant_languages')
+          .select('language_code')
           .eq('restaurant_id', restaurantData.id)
-          .order('display_order', { ascending: true });
+          .eq('is_default', true)
+          .single();
 
-        console.log('Categories query result:', { categoriesData, categoriesError });
-        if (categoriesError) throw categoriesError;
-        setCategories(categoriesData || []);
+        const { data: currenciesData } = await supabase
+          .from('restaurant_currencies')
+          .select('currency_code')
+          .eq('restaurant_id', restaurantData.id)
+          .eq('is_default', true)
+          .single();
 
-        // Fetch menu items
+        setSelectedLanguage(languagesData?.language_code || 'en');
+        setSelectedCurrency(currenciesData?.currency_code || 'USD');
+
+        // Fetch menu items with translations
         const { data: itemsData, error: itemsError } = await supabase
           .from('menu_items')
-          .select('*')
+          .select(`
+            *,
+            menu_item_translations(*)
+          `)
           .eq('restaurant_id', restaurantData.id)
           .eq('is_available', true)
-          .order('display_order', { ascending: true });
+          .order('display_order');
 
-        console.log('Menu items query result:', { itemsData, itemsError });
         if (itemsError) throw itemsError;
         setMenuItems(itemsData || []);
+
+        // Fetch categories with translations
+        const { data: categoriesData, error: categoriesError } = await supabase
+          .from('menu_categories')
+          .select(`
+            *,
+            menu_category_translations(*)
+          `)
+          .eq('restaurant_id', restaurantData.id)
+          .order('display_order');
+
+        if (categoriesError) throw categoriesError;
+        setCategories(categoriesData || []);
 
         console.log('Successfully loaded menu data');
 
@@ -548,7 +574,48 @@ export default function PublicMenu() {
     );
   }
 
-  // moved color effect above to maintain hook order
+  // Helper function to get translated text
+  const getTranslatedText = (item: any, field: string, translations: any[]) => {
+    const translation = translations?.find((t: any) => t.language_code === selectedLanguage);
+    return translation?.[field] || item[field] || '';
+  };
+
+  // Helper function to convert price to selected currency
+  const convertPrice = (basePrice: number, baseCurrency: string) => {
+    if (selectedCurrency === baseCurrency) return basePrice;
+    
+    // This is a simplified conversion - in a real app, you'd use real exchange rates
+    const exchangeRates: { [key: string]: number } = {
+      'USD': 1,
+      'EUR': 0.85,
+      'GBP': 0.73,
+      'CAD': 1.25,
+      'AUD': 1.35,
+      'JPY': 110,
+      'CNY': 6.45,
+    };
+    
+    const baseRate = exchangeRates[baseCurrency] || 1;
+    const targetRate = exchangeRates[selectedCurrency] || 1;
+    
+    return (basePrice / baseRate) * targetRate;
+  };
+
+  // Format price with currency symbol
+  const formatPrice = (price: number, currencyCode: string) => {
+    const currencySymbols: { [key: string]: string } = {
+      'USD': '$',
+      'EUR': '€',
+      'GBP': '£',
+      'CAD': 'C$',
+      'AUD': 'A$',
+      'JPY': '¥',
+      'CNY': '¥',
+    };
+    
+    const symbol = currencySymbols[currencyCode] || currencyCode;
+    return `${symbol}${price.toFixed(2)}`;
+  };
 
 
   const renderTemplate = () => {
@@ -569,6 +636,15 @@ export default function PublicMenu() {
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
+        {/* Language/Currency Selector */}
+        <LanguageCurrencySelector
+          restaurantSlug={slug!}
+          selectedLanguage={selectedLanguage}
+          selectedCurrency={selectedCurrency}
+          onLanguageChange={setSelectedLanguage}
+          onCurrencyChange={setSelectedCurrency}
+        />
+        
         {renderTemplate()}
       </main>
       
