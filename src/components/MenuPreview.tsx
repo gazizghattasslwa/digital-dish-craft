@@ -62,35 +62,48 @@ export const MenuPreview = ({ menuItems, restaurantName, colors }: MenuPreviewPr
                   <div className="h-1 w-16 bg-gradient-warm rounded-full"></div>
                 </div>
                 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-6">
                   {items.map((item) => (
-                    <Card key={item.id} className="hover:shadow-menu-item transition-all duration-300 border-border/50">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-xl font-semibold text-foreground">
-                                {item.name}
-                              </h3>
-                              {item.category === "Specials" && (
-                                <Badge className="bg-accent text-accent-foreground">
-                                  Special
-                                </Badge>
-                              )}
+                    <Card key={item.id} className="hover:shadow-menu-item transition-all duration-300 border-border/50 overflow-hidden">
+                      <CardContent className="p-0">
+                        <div className="flex flex-col md:flex-row">
+                          {item.image && (
+                            <div className="md:w-48 h-48 md:h-auto flex-shrink-0">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                              />
                             </div>
-                            {item.description && (
-                              <p className="text-muted-foreground leading-relaxed">
-                                {item.description}
-                              </p>
-                            )}
-                          </div>
-                          <div className="ml-6 flex-shrink-0">
-                            <span 
-                              className="text-2xl font-bold"
-                              style={{ color: colors.primary || 'hsl(var(--primary))' }}
-                            >
-                              ${item.price.toFixed(2)}
-                            </span>
+                          )}
+                          <div className="flex-1 p-6">
+                            <div className="flex justify-between items-start">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <h3 className="text-xl font-semibold text-foreground">
+                                    {item.name}
+                                  </h3>
+                                  {item.category === "Specials" && (
+                                    <Badge className="bg-accent text-accent-foreground">
+                                      Special
+                                    </Badge>
+                                  )}
+                                </div>
+                                {item.description && (
+                                  <p className="text-muted-foreground leading-relaxed">
+                                    {item.description}
+                                  </p>
+                                )}
+                              </div>
+                              <div className="ml-6 flex-shrink-0">
+                                <span 
+                                  className="text-2xl font-bold"
+                                  style={{ color: colors.primary || 'hsl(var(--primary))' }}
+                                >
+                                  ${item.price.toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </CardContent>
