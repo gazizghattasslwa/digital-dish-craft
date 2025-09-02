@@ -445,6 +445,14 @@ export default function PublicMenu() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Apply restaurant colors to CSS variables
+  useEffect(() => {
+    if (restaurant) {
+      document.documentElement.style.setProperty('--menu-primary', restaurant.primary_color);
+      document.documentElement.style.setProperty('--menu-secondary', restaurant.secondary_color);
+    }
+  }, [restaurant]);
+
   useEffect(() => {
     const fetchMenuData = async () => {
       if (!slug) {
@@ -460,20 +468,26 @@ export default function PublicMenu() {
           .from('restaurants')
           .select('*')
           .eq('slug', slug)
-          .single();
+          .maybeSingle();
 
         console.log('Restaurant query result:', { restaurantData, restaurantError });
 
-      if (restaurantError) {
-        console.log('Restaurant query error:', restaurantError);
-        if (restaurantError.code === 'PGRST116') {
-          console.log('Restaurant not found, setting error');
-          setError('Menu not found');
-        } else {
-          throw restaurantError;
+        if (restaurantError) {
+          console.log('Restaurant query error:', restaurantError);
+          if (restaurantError.code === 'PGRST116') {
+            console.log('Restaurant not found, setting error');
+            setError('Menu not found');
+          } else {
+            throw restaurantError;
+          }
+          return;
         }
-        return;
-      }
+
+        if (!restaurantData) {
+          console.log('No restaurant found for slug, setting error');
+          setError('Menu not found');
+          return;
+        }
 
         setRestaurant(restaurantData);
 
@@ -534,13 +548,8 @@ export default function PublicMenu() {
     );
   }
 
-  // Apply restaurant colors to CSS variables
-  useEffect(() => {
-    if (restaurant) {
-      document.documentElement.style.setProperty('--menu-primary', restaurant.primary_color);
-      document.documentElement.style.setProperty('--menu-secondary', restaurant.secondary_color);
-    }
-  }, [restaurant]);
+  // moved color effect above to maintain hook order
+
 
   const renderTemplate = () => {
     const props = { restaurant, menuItems, categories };

@@ -53,6 +53,23 @@ export function RestaurantBranding({ restaurant, onUpdate }: RestaurantBrandingP
     menu_template: restaurant.menu_template,
   });
 
+  const handleTemplateSelect = async (templateId: string) => {
+    setFormData((prev) => ({ ...prev, menu_template: templateId }));
+    try {
+      const { data, error } = await supabase
+        .from('restaurants')
+        .update({ menu_template: templateId })
+        .eq('id', restaurant.id)
+        .select()
+        .single();
+      if (error) throw error;
+      onUpdate(data);
+      toast({ title: 'Template updated', description: 'Menu template saved.' });
+    } catch (error: any) {
+      toast({ title: 'Error updating template', description: error.message, variant: 'destructive' });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -170,10 +187,10 @@ export function RestaurantBranding({ restaurant, onUpdate }: RestaurantBrandingP
         <CardContent>
           <div className="space-y-4">
             <Label>Choose a template for your public menu</Label>
-            <MenuTemplateSelector 
-              selectedTemplate={formData.menu_template}
-              onTemplateSelect={(templateId) => setFormData({ ...formData, menu_template: templateId })}
-            />
+              <MenuTemplateSelector 
+                selectedTemplate={formData.menu_template}
+                onTemplateSelect={handleTemplateSelect}
+              />
           </div>
         </CardContent>
       </Card>

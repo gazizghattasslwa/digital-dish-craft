@@ -62,7 +62,7 @@ export const MenuPreview = ({ menuItems, restaurantName, colors }: MenuPreviewPr
                   <div className="h-1 w-16 bg-gradient-warm rounded-full"></div>
                 </div>
                 
-                <div className="grid gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
                   {items.map((item) => (
                     <Card key={item.id} className="hover:shadow-menu-item transition-all duration-300 border-border/50">
                       <CardContent className="p-6">
