@@ -220,7 +220,7 @@ export const PremiumDashboard = () => {
             shadowClass: "shadow-glass"
           }
         ].map((stat, index) => (
-          <Card key={index} className={`stats-card ${stat.shadowClass} border-0 overflow-hidden`}>
+          <Card key={index} className={`stats-card group ${stat.shadowClass} border-0 overflow-hidden`}>
             <CardContent className="p-6 relative">
               <div className="flex items-center justify-between mb-4">
                 <div className={`w-12 h-12 ${stat.gradient} rounded-2xl flex items-center justify-center text-white shadow-lg`}>

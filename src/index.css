@@ -305,7 +305,7 @@ All colors MUST be HSL.
   }
   
   .stats-card {
-    @apply floating-card p-6 group overflow-hidden relative;
+    @apply floating-card p-6 overflow-hidden relative;
   }
   
   .stats-card::before {
