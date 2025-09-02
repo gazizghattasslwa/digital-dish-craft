@@ -5,12 +5,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, Eye, QrCode, ExternalLink } from 'lucide-react';
 import { RestaurantDetails } from '@/components/restaurant/RestaurantDetails';
 import { RestaurantBranding } from '@/components/restaurant/RestaurantBranding';
 import { MenuManagement } from '@/components/restaurant/MenuManagement';
 import { MenuPreview } from '@/components/MenuPreview';
+import { QRCodeGenerator } from '@/components/QRCodeGenerator';
 
 interface Restaurant {
   id: string;
@@ -25,6 +26,7 @@ interface Restaurant {
   default_currency: string;
   default_language: string;
   slug: string;
+  menu_template: string;
 }
 
 interface MenuItem {
@@ -198,14 +200,16 @@ export default function RestaurantManagement() {
                 <p className="text-xs sm:text-sm text-muted-foreground">Restaurant Management</p>
               </div>
             </div>
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap">
               {restaurant.slug && (
                 <>
-                  <Button variant="outline" size="sm" className="text-xs sm:text-sm">
-                    <QrCode className="w-4 h-4 mr-1 sm:mr-2" />
-                    <span className="hidden sm:inline">QR Code</span>
-                    <span className="sm:hidden">QR</span>
-                  </Button>
+                  <QRCodeGenerator 
+                    url={generatePublicUrl() || ''}
+                    restaurantName={restaurant.name}
+                    primaryColor={restaurant.primary_color}
+                    secondaryColor={restaurant.secondary_color}
+                    logoUrl={restaurant.logo_url}
+                  />
                   <Button 
                     variant="outline" 
                     size="sm"
@@ -278,6 +282,17 @@ export default function RestaurantManagement() {
               </CardHeader>
               <CardContent>
                 <div className="max-w-2xl mx-auto">
+                  <div className="mb-4 text-center">
+                    <p className="text-muted-foreground mb-2">Template: <strong className="capitalize">{restaurant.menu_template}</strong></p>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => window.open(generatePublicUrl(), '_blank')}
+                      disabled={!restaurant.slug}
+                    >
+                      View Full Menu Page
+                    </Button>
+                  </div>
                   <MenuPreview
                     menuItems={previewMenuItems}
                     restaurantName={restaurant.name}

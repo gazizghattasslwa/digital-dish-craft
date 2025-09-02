@@ -192,6 +192,7 @@ export type Database = {
           description: string | null
           id: string
           logo_url: string | null
+          menu_template: string
           name: string
           phone: string | null
           primary_color: string | null
@@ -209,6 +210,7 @@ export type Database = {
           description?: string | null
           id?: string
           logo_url?: string | null
+          menu_template?: string
           name: string
           phone?: string | null
           primary_color?: string | null
@@ -226,6 +228,7 @@ export type Database = {
           description?: string | null
           id?: string
           logo_url?: string | null
+          menu_template?: string
           name?: string
           phone?: string | null
           primary_color?: string | null
