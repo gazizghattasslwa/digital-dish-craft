@@ -140,7 +140,7 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md mx-auto">
         <div className="mb-6">
           <Button
             variant="ghost"
@@ -158,11 +158,7 @@ export default function Auth() {
               Welcome to MenuCraft
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            {/* Debug info */}
-            <div className="text-sm text-gray-500 mb-4 p-2 bg-gray-100 rounded">
-              Debug: Auth page loaded. Current tab: {defaultTab}
-            </div>
+          <CardContent className="px-4 sm:px-6">
             <Tabs defaultValue={defaultTab} className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin">Sign In</TabsTrigger>

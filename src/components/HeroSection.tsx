@@ -29,16 +29,16 @@ export const HeroSection = () => {
       </div>
       
       {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-20 p-6">
+      <nav className="absolute top-0 left-0 right-0 z-20 p-4 sm:p-6">
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-2xl font-bold text-white">
+          <div className="text-lg sm:text-2xl font-bold text-white">
             MenuCraft
           </div>
-          <div className="space-x-4">
+          <div className="flex gap-2 sm:gap-4">
             {user ? (
               <Button 
                 variant="ghost" 
-                className="text-white hover:bg-white/10"
+                className="text-white hover:bg-white/10 text-sm sm:text-base"
                 onClick={() => navigate('/dashboard')}
               >
                 Dashboard
@@ -47,13 +47,13 @@ export const HeroSection = () => {
               <>
                 <Button 
                   variant="ghost" 
-                  className="text-white hover:bg-white/10"
+                  className="text-white hover:bg-white/10 text-sm sm:text-base px-3 sm:px-4"
                   onClick={() => navigate('/auth?tab=signin')}
                 >
                   Sign In
                 </Button>
                 <Button 
-                  className="bg-white text-primary hover:bg-white/90"
+                  className="bg-white text-primary hover:bg-white/90 text-sm sm:text-base px-3 sm:px-4"
                   onClick={() => navigate('/auth?tab=signup')}
                 >
                   Get Started
