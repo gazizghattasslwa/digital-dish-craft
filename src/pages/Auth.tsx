@@ -35,9 +35,17 @@ export default function Auth() {
     const { error } = await signIn(email, password);
 
     if (error) {
+      let title = "Error signing in";
+      let description = error.message;
+      
+      if (error.message === "Email not confirmed") {
+        title = "Email not confirmed";
+        description = "Please check your email and click the confirmation link before signing in. You can also disable email confirmation in your Supabase settings for testing.";
+      }
+      
       toast({
-        title: "Error signing in",
-        description: error.message,
+        title,
+        description,
         variant: "destructive",
       });
     } else {
