@@ -5,12 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Edit2, Trash2, Save, Upload, Loader2, FileText, Image as ImageIcon, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, Upload, Loader2, FileText, Image as ImageIcon, X, Menu as MenuIcon } from 'lucide-react';
 import { QuickMenuImport } from './QuickMenuImport';
 import { toast } from 'sonner';
 
@@ -324,111 +325,172 @@ export function MenuManagement({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Upload Options */}
       <QuickMenuImport 
         restaurant={restaurant} 
         onImportComplete={handleImportComplete}
       />
 
-      <Tabs defaultValue="categories" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="categories">Categories ({categories.length})</TabsTrigger>
-          <TabsTrigger value="items">Menu Items ({menuItems.length})</TabsTrigger>
-        </TabsList>
+      <Tabs defaultValue="categories" className="space-y-6">
+        <div className="glass-card p-2 rounded-2xl shadow-glass">
+          <TabsList className="bg-transparent gap-2">
+            <TabsTrigger 
+              value="categories" 
+              className="transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Categories ({categories.length})
+            </TabsTrigger>
+            <TabsTrigger 
+              value="items" 
+              className="transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <MenuIcon className="w-4 h-4 mr-2" />
+              Menu Items ({menuItems.length})
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
-        <TabsContent value="categories" className="space-y-4">
+        <TabsContent value="categories" className="space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold">Menu Categories</h3>
-            <Button onClick={() => openCategoryDialog()}>
+            <div className="space-y-1">
+              <h3 className="text-2xl font-bold text-gradient">Menu Categories</h3>
+              <p className="text-muted-foreground">Organize your menu items into categories</p>
+            </div>
+            <Button 
+              onClick={() => openCategoryDialog()}
+              className="btn-primary shadow-primary"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Add Category
             </Button>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-6">
             {categories.map((category) => (
-              <Card key={category.id}>
-                <CardContent className="p-4">
+              <Card key={category.id} className="floating-card border-0 group">
+                <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">{category.name}</h4>
-                      {category.description && (
-                        <p className="text-sm text-muted-foreground">{category.description}</p>
-                      )}
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 gradient-secondary rounded-2xl flex items-center justify-center shadow-secondary">
+                        <Plus className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-semibold text-foreground group-hover:text-gradient transition-smooth">
+                          {category.name}
+                        </h4>
+                        {category.description && (
+                          <p className="text-muted-foreground text-sm mt-1">{category.description}</p>
+                        )}
+                      </div>
                     </div>
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => openCategoryDialog(category)}
+                        className="glass-card hover:shadow-primary border-0"
                       >
-                        <Edit2 className="w-3 h-3" />
+                        <Edit2 className="w-4 h-4" />
                       </Button>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => handleDeleteCategory(category.id)}
+                        className="glass-card hover:shadow-accent border-0 hover:bg-destructive/10"
                       >
-                        <Trash2 className="w-3 h-3" />
+                        <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             ))}
+            
+            {categories.length === 0 && (
+              <Card className="premium-card border-0">
+                <CardContent className="text-center py-12">
+                  <div className="w-16 h-16 gradient-secondary rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-secondary">
+                    <Plus className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gradient mb-2">No Categories Yet</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Create categories to organize your menu items
+                  </p>
+                  <Button 
+                    onClick={() => openCategoryDialog()}
+                    className="btn-secondary"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create First Category
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </TabsContent>
 
-        <TabsContent value="items" className="space-y-4">
+        <TabsContent value="items" className="space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold">Menu Items</h3>
-            <Button onClick={() => openItemDialog()} disabled={!canCreateMenuItem}>
+            <div className="space-y-1">
+              <h3 className="text-2xl font-bold text-gradient">Menu Items</h3>
+              <p className="text-muted-foreground">Manage your restaurant's menu items</p>
+            </div>
+            <Button 
+              onClick={() => openItemDialog()} 
+              disabled={!canCreateMenuItem}
+              className="btn-primary shadow-primary"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Add Item
             </Button>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-6">
             {menuItems.map((item) => {
               const category = categories.find(cat => cat.id === item.category_id);
               return (
-                <Card key={item.id}>
-                  <CardContent className="p-4">
+                <Card key={item.id} className="floating-card border-0 group">
+                  <CardContent className="p-6">
                     <div className="flex items-center justify-between">
-                      {item.image_url && (
-                        <div className="flex-shrink-0 mr-4">
-                          <img
-                            src={item.image_url}
-                            alt={item.name}
-                            className="w-16 h-16 object-cover rounded-lg border"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2">
-                          <h4 className="font-medium">{item.name}</h4>
-                          {item.is_special && (
-                            <span className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
-                              Special
-                            </span>
-                          )}
-                          {!item.is_available && (
-                            <span className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded-full">
-                              Unavailable
-                            </span>
-                          )}
-                        </div>
-                        {item.description && (
-                          <p className="text-sm text-muted-foreground">{item.description}</p>
+                      <div className="flex items-center space-x-4">
+                        {item.image_url ? (
+                          <div className="relative">
+                            <img
+                              src={item.image_url}
+                              alt={item.name}
+                              className="w-16 h-16 object-cover rounded-2xl border-2 border-white shadow-lg group-hover:scale-105 transition-elastic"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center shadow-primary">
+                            <ImageIcon className="w-8 h-8 text-white" />
+                          </div>
                         )}
-                        <div className="flex items-center space-x-4 mt-2">
-                          <span className="font-medium">${item.price}</span>
-                          {category && (
-                            <span className="text-sm text-muted-foreground">
-                              {category.name}
-                            </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-3 mb-2">
+                            <h4 className="text-lg font-semibold text-foreground group-hover:text-gradient transition-smooth truncate">
+                              {item.name}
+                            </h4>
+                            {item.is_special && (
+                              <Badge className="badge-accent">Special</Badge>
+                            )}
+                            {!item.is_available && (
+                              <Badge variant="secondary" className="bg-muted">Unavailable</Badge>
+                            )}
+                          </div>
+                          {item.description && (
+                            <p className="text-muted-foreground text-sm mb-2 line-clamp-2">{item.description}</p>
                           )}
+                          <div className="flex items-center space-x-4 text-sm">
+                            <span className="font-bold text-primary text-lg">${item.price}</span>
+                            {category && (
+                              <Badge variant="outline" className="text-muted-foreground">
+                                {category.name}
+                              </Badge>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div className="flex space-x-2">
@@ -436,15 +498,17 @@ export function MenuManagement({
                           size="sm"
                           variant="outline"
                           onClick={() => openItemDialog(item)}
+                          className="glass-card hover:shadow-primary border-0"
                         >
-                          <Edit2 className="w-3 h-3" />
+                          <Edit2 className="w-4 h-4" />
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleDeleteItem(item.id)}
+                          className="glass-card hover:shadow-accent border-0 hover:bg-destructive/10"
                         >
-                          <Trash2 className="w-3 h-3" />
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
@@ -452,6 +516,28 @@ export function MenuManagement({
                 </Card>
               );
             })}
+            
+            {menuItems.length === 0 && (
+              <Card className="premium-card border-0">
+                <CardContent className="text-center py-12">
+                  <div className="w-16 h-16 gradient-primary rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-primary">
+                    <MenuIcon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gradient mb-2">No Menu Items Yet</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Start building your menu by adding your first item
+                  </p>
+                  <Button 
+                    onClick={() => openItemDialog()}
+                    disabled={!canCreateMenuItem}
+                    className="btn-primary"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add First Item
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </TabsContent>
       </Tabs>

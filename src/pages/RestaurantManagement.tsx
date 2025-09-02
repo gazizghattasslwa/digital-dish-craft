@@ -5,8 +5,23 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, QrCode, ExternalLink } from 'lucide-react';
+import { 
+  Eye, 
+  QrCode, 
+  ExternalLink, 
+  Store, 
+  Sparkles, 
+  Settings, 
+  Menu as MenuIcon,
+  Palette,
+  Globe,
+  DollarSign,
+  Upload,
+  Star,
+  Activity
+} from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RestaurantDetails } from '@/components/restaurant/RestaurantDetails';
 import { RestaurantBranding } from '@/components/restaurant/RestaurantBranding';
@@ -182,12 +197,21 @@ export default function RestaurantManagement() {
   if (loading) {
     return (
       <DashboardLayout 
-        title="Loading..." 
-        description="Loading restaurant data..."
+        title="Loading Restaurant..." 
+        description="Preparing your restaurant management interface..."
         restaurantId={id}
       >
-        <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="flex flex-col items-center space-y-6">
+            <div className="relative">
+              <div className="w-16 h-16 gradient-primary rounded-full animate-pulse"></div>
+              <div className="absolute inset-0 w-16 h-16 border-4 border-primary/20 rounded-full animate-spin border-t-primary"></div>
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="text-xl font-semibold text-gradient">Loading Restaurant</h3>
+              <p className="text-muted-foreground">Setting up your management interface...</p>
+            </div>
+          </div>
         </div>
       </DashboardLayout>
     );
@@ -200,12 +224,23 @@ export default function RestaurantManagement() {
         description="This restaurant doesn't exist or you don't have access to it."
         restaurantId={id}
       >
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Restaurant not found</h2>
-          <Button onClick={() => navigate('/dashboard')}>
-            Back to Dashboard
-          </Button>
-        </div>
+        <Card className="premium-card max-w-md mx-auto mt-20">
+          <CardContent className="text-center py-12">
+            <div className="w-16 h-16 gradient-primary rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-primary">
+              <Store className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-gradient mb-4">Restaurant Not Found</h2>
+            <p className="text-muted-foreground mb-8">
+              This restaurant doesn't exist or you don't have access to it.
+            </p>
+            <Button 
+              onClick={() => navigate('/dashboard')} 
+              className="btn-primary"
+            >
+              Back to Dashboard
+            </Button>
+          </CardContent>
+        </Card>
       </DashboardLayout>
     );
   }
@@ -217,7 +252,7 @@ export default function RestaurantManagement() {
       breadcrumbs={getBreadcrumbs()}
       restaurantId={id}
       headerActions={
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-3 flex-wrap">
           {restaurant.slug && (
             <>
               <QRCodeGenerator 
@@ -231,6 +266,7 @@ export default function RestaurantManagement() {
                 variant="outline" 
                 size="sm"
                 onClick={() => window.open(generatePublicUrl(), '_blank')}
+                className="glass-card hover:shadow-accent"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 View Public Menu
@@ -241,6 +277,7 @@ export default function RestaurantManagement() {
             variant="outline" 
             size="sm" 
             onClick={() => setActiveTab('preview')}
+            className="glass-card hover:shadow-primary"
           >
             <Eye className="w-4 h-4 mr-2" />
             Preview Menu
@@ -248,16 +285,126 @@ export default function RestaurantManagement() {
         </div>
       }
     >
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
-          <TabsTrigger value="overview" className="text-xs lg:text-sm">Overview</TabsTrigger>
-          <TabsTrigger value="menu" className="text-xs lg:text-sm">Menu</TabsTrigger>
-          <TabsTrigger value="import" className="text-xs lg:text-sm">Import</TabsTrigger>
-          <TabsTrigger value="branding" className="text-xs lg:text-sm">Branding</TabsTrigger>
-          <TabsTrigger value="languages" className="text-xs lg:text-sm">Languages</TabsTrigger>
-          <TabsTrigger value="currencies" className="text-xs lg:text-sm">Currencies</TabsTrigger>
-          <TabsTrigger value="preview" className="text-xs lg:text-sm">Preview</TabsTrigger>
-        </TabsList>
+      {/* Restaurant Hero Section */}
+      <div className="relative overflow-hidden rounded-3xl mb-8 shadow-premium">
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(135deg, ${restaurant.primary_color} 0%, ${restaurant.secondary_color} 100%)`
+          }}
+        />
+        <div className="absolute inset-0 gradient-aurora opacity-30"></div>
+        <div className="relative z-10 p-8 lg:p-12">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <div className="relative">
+                <div className="w-20 h-20 lg:w-24 lg:h-24 glass-card rounded-3xl flex items-center justify-center shadow-glass">
+                  {restaurant.logo_url ? (
+                    <img 
+                      src={restaurant.logo_url} 
+                      alt={`${restaurant.name} logo`}
+                      className="w-12 h-12 lg:w-14 lg:h-14 object-cover rounded-2xl"
+                    />
+                  ) : (
+                    <Store className="w-12 h-12 lg:w-14 lg:h-14 text-white" />
+                  )}
+                </div>
+                {restaurant.slug && (
+                  <div className="absolute -top-2 -right-2 w-8 h-8 gradient-accent rounded-full flex items-center justify-center shadow-accent">
+                    <Activity className="w-4 h-4 text-white" />
+                  </div>
+                )}
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <h1 className="text-3xl lg:text-4xl font-bold text-white">
+                    {restaurant.name}
+                  </h1>
+                  {restaurant.slug && (
+                    <Badge className="badge-accent text-white">Live</Badge>
+                  )}
+                </div>
+                {restaurant.description && (
+                  <p className="text-white/80 text-lg max-w-2xl">
+                    {restaurant.description}
+                  </p>
+                )}
+                <div className="flex items-center gap-4 text-white/60 text-sm">
+                  <span className="flex items-center">
+                    <MenuIcon className="w-4 h-4 mr-1" />
+                    {menuItems.length} Items
+                  </span>
+                  <span className="flex items-center">
+                    <Star className="w-4 h-4 mr-1" />
+                    {categories.length} Categories
+                  </span>
+                  <span className="flex items-center">
+                    <DollarSign className="w-4 h-4 mr-1" />
+                    {restaurant.default_currency}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Enhanced Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+        <div className="glass-card p-2 rounded-2xl shadow-glass">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 bg-transparent gap-1">
+            <TabsTrigger 
+              value="overview" 
+              className="text-xs lg:text-sm transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <Settings className="w-4 h-4 mr-1 lg:mr-2" />
+              <span className="hidden sm:inline">Overview</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="menu" 
+              className="text-xs lg:text-sm transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <MenuIcon className="w-4 h-4 mr-1 lg:mr-2" />
+              <span className="hidden sm:inline">Menu</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="import" 
+              className="text-xs lg:text-sm transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <Upload className="w-4 h-4 mr-1 lg:mr-2" />
+              <span className="hidden sm:inline">Import</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="branding" 
+              className="text-xs lg:text-sm transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <Palette className="w-4 h-4 mr-1 lg:mr-2" />
+              <span className="hidden sm:inline">Branding</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="languages" 
+              className="text-xs lg:text-sm transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <Globe className="w-4 h-4 mr-1 lg:mr-2" />
+              <span className="hidden sm:inline">Languages</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="currencies" 
+              className="text-xs lg:text-sm transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <DollarSign className="w-4 h-4 mr-1 lg:mr-2" />
+              <span className="hidden sm:inline">Currencies</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="preview" 
+              className="text-xs lg:text-sm transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-primary rounded-xl"
+            >
+              <Eye className="w-4 h-4 mr-1 lg:mr-2" />
+              <span className="hidden sm:inline">Preview</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="overview" className="space-y-6">
           <RestaurantDetails 
@@ -302,32 +449,46 @@ export default function RestaurantManagement() {
         </TabsContent>
 
         <TabsContent value="preview" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Menu Preview</CardTitle>
-                {restaurant.slug && (
-                  <div className="text-sm text-muted-foreground">
-                    Public URL: <code className="bg-muted px-2 py-1 rounded text-xs">
-                      {generatePublicUrl()}
-                    </code>
-                  </div>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="max-w-2xl mx-auto">
-                <div className="mb-4 text-center">
-                  <p className="text-muted-foreground mb-2">Template: <strong className="capitalize">{restaurant.menu_template}</strong></p>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => window.open(generatePublicUrl(), '_blank')}
-                    disabled={!restaurant.slug}
-                  >
-                    View Full Menu Page
-                  </Button>
+          <Card className="premium-card border-0">
+            <CardHeader className="text-center space-y-4">
+              <div className="flex items-center justify-center space-x-3">
+                <div className="w-12 h-12 gradient-primary rounded-2xl flex items-center justify-center">
+                  <Eye className="w-6 h-6 text-white" />
                 </div>
+                <CardTitle className="text-2xl text-gradient">Menu Preview</CardTitle>
+              </div>
+              {restaurant.slug && (
+                <div className="glass-card p-4 rounded-xl">
+                  <p className="text-sm text-muted-foreground mb-2">Public URL:</p>
+                  <code className="text-primary font-mono text-sm break-all">
+                    {generatePublicUrl()}
+                  </code>
+                </div>
+              )}
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="text-center space-y-4">
+                <div className="flex items-center justify-center gap-6">
+                  <Badge className="badge-secondary">
+                    Template: {restaurant.menu_template}
+                  </Badge>
+                  <Badge className="badge-accent">
+                    {menuItems.length} Menu Items
+                  </Badge>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  onClick={() => window.open(generatePublicUrl(), '_blank')}
+                  disabled={!restaurant.slug}
+                  className="btn-glass"
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  View Full Menu Page
+                </Button>
+              </div>
+              
+              <div className="max-w-4xl mx-auto">
                 <MenuPreview
                   menuItems={previewMenuItems}
                   restaurantName={restaurant.name}
