@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Plus, Edit2, Trash2, Save, Upload, Loader2, FileText, Image as ImageIcon, X, Menu as MenuIcon } from 'lucide-react';
-import { QuickMenuImport } from './QuickMenuImport';
+import QuickMenuImport from './QuickMenuImport';
 import { toast } from 'sonner';
 
 interface Restaurant {
@@ -319,16 +319,16 @@ export function MenuManagement({
     setShowItemDialog(true);
   };
 
-  const handleImportComplete = (newCategories: MenuCategory[], newItems: MenuItem[]) => {
-    onCategoriesUpdate([...categories, ...newCategories]);
-    onMenuItemsUpdate([...menuItems, ...newItems]);
+  const handleImportComplete = () => {
+    onCategoriesUpdate([...categories]);
+    onMenuItemsUpdate([...menuItems]);
   };
 
   return (
     <div className="space-y-8">
       {/* Upload Options */}
       <QuickMenuImport 
-        restaurant={restaurant} 
+        restaurantId={restaurant.id} 
         onImportComplete={handleImportComplete}
       />
 

@@ -32,6 +32,7 @@ import { MenuPreview } from '@/components/MenuPreview';
 import { QRCodeGenerator } from '@/components/QRCodeGenerator';
 import { CustomDomainManagement } from '@/components/restaurant/CustomDomainManagement';
 import { MinimalMenuManagement } from '@/components/restaurant/MinimalMenuManagement';
+import QuickMenuImport from '@/components/restaurant/QuickMenuImport';
 
 interface Restaurant {
   id: string;
@@ -423,10 +424,10 @@ export default function MinimalRestaurantManagement() {
 
         <TabsContent value="import" className="space-y-6">
           <QuickMenuImport 
-            restaurant={restaurant}
-            onImportComplete={(newCategories, newItems) => {
-              setCategories([...categories, ...newCategories]);
-              setMenuItems([...menuItems, ...newItems]);
+            restaurantId={restaurant.id}
+            onImportComplete={() => {
+              // Refresh data after import
+              fetchRestaurantData();
             }}
           />
         </TabsContent>
