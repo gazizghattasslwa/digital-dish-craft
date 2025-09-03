@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,7 +17,8 @@ import {
   Zap,
   Shield,
   ArrowRight,
-  Info
+  Info,
+  RefreshCw
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -48,11 +49,20 @@ export function CustomDomainManagement({ restaurantId, restaurantName, restauran
 
   const fetchDomainRecords = async () => {
     try {
-      // For now, use mock data until custom_domains table types are available
-      const mockDomains: DomainRecord[] = [];
-      setDomainRecords(mockDomains);
+      // Use edge function to fetch domains since custom_domains table types aren't available
+      const { data, error } = await supabase.functions.invoke('manage-custom-domain', {
+        body: {
+          action: 'fetch',
+          restaurantId: restaurantId
+        }
+      });
+
+      if (error) throw error;
+      setDomainRecords(data?.domains || []);
     } catch (error: any) {
       console.error('Error fetching domain records:', error);
+      // Fallback to empty array if function fails
+      setDomainRecords([]);
     }
   };
 
@@ -71,34 +81,68 @@ export function CustomDomainManagement({ restaurantId, restaurantName, restauran
 
     setLoading(true);
     try {
-      // For now, simulate adding domain until custom_domains table types are available
-      const newDomainRecord: DomainRecord = {
-        id: Date.now().toString(),
-        domain: customDomain.toLowerCase().trim(),
-        status: 'pending',
-        ssl_status: 'pending',
-        created_at: new Date().toISOString()
-      };
-      
-      setDomainRecords([newDomainRecord, ...domainRecords]);
+      const { data, error } = await supabase.functions.invoke('manage-custom-domain', {
+        body: {
+          action: 'add',
+          domain: customDomain.toLowerCase().trim(),
+          restaurantId: restaurantId
+        }
+      });
+
+      if (error) throw error;
+
+      await fetchDomainRecords(); // Refresh the list
       setCustomDomain('');
       setActiveTab('manage');
       
       toast.success('Domain added! Follow the setup instructions to complete the configuration.');
     } catch (error: any) {
-      toast.error('Error adding domain');
+      toast.error(error.message || 'Error adding domain');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDeleteDomain = async (domainId: string) => {
+  const handleDeleteDomain = async (domainId: string, domain: string) => {
     try {
-      // For now, simulate deletion until custom_domains table types are available
-      setDomainRecords(domainRecords.filter(d => d.id !== domainId));
+      const { error } = await supabase.functions.invoke('manage-custom-domain', {
+        body: {
+          action: 'delete',
+          domain: domain,
+          restaurantId: restaurantId
+        }
+      });
+
+      if (error) throw error;
+
+      await fetchDomainRecords(); // Refresh the list
       toast.success('Domain removed successfully');
     } catch (error: any) {
-      toast.error('Error removing domain');
+      toast.error(error.message || 'Error removing domain');
+    }
+  };
+
+  const handleVerifyDomain = async (domain: string) => {
+    try {
+      const { data, error } = await supabase.functions.invoke('manage-custom-domain', {
+        body: {
+          action: 'verify',
+          domain: domain,
+          restaurantId: restaurantId
+        }
+      });
+
+      if (error) throw error;
+
+      await fetchDomainRecords(); // Refresh the list
+      
+      if (data.verified) {
+        toast.success('Domain verified successfully!');
+      } else {
+        toast.error('Domain verification failed. Please check your DNS settings.');
+      }
+    } catch (error: any) {
+      toast.error(error.message || 'Error verifying domain');
     }
   };
 
@@ -228,10 +272,10 @@ export function CustomDomainManagement({ restaurantId, restaurantName, restauran
                       <div className="space-y-1">
                         <div className="text-sm font-medium">A Record</div>
                         <div className="text-xs text-muted-foreground">
-                          Name: @ (or your subdomain)
+                          Name: @ (for root domain) or www (for subdomain)
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          Value: 185.158.133.1
+                          Value: 185.158.133.1 (Lovable's IP)
                         </div>
                       </div>
                       <Button
@@ -329,14 +373,25 @@ export function CustomDomainManagement({ restaurantId, restaurantName, restauran
                       </div>
                       <div className="flex items-center gap-2">
                         {domain.status === 'pending' && (
-                          <div className="text-sm text-muted-foreground">
-                            Waiting for DNS...
-                          </div>
+                          <>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleVerifyDomain(domain.domain)}
+                              className="flex items-center gap-1"
+                            >
+                              <RefreshCw className="w-3 h-3" />
+                              Verify DNS
+                            </Button>
+                            <div className="text-sm text-muted-foreground">
+                              Waiting for DNS...
+                            </div>
+                          </>
                         )}
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleDeleteDomain(domain.id)}
+                          onClick={() => handleDeleteDomain(domain.id, domain.domain)}
                           className="text-destructive hover:bg-destructive/10"
                         >
                           Remove

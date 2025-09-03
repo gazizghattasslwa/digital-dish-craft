@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import RestaurantManagement from "./pages/RestaurantManagement";
 import PublicMenu from "./pages/PublicMenu";
+import CustomDomainMenu from "./pages/CustomDomainMenu";
 import Subscription from "./pages/Subscription";
 import NotFound from "./pages/NotFound";
 
@@ -41,6 +42,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/menu/:slug" element={<PublicMenu />} />
+              <Route path="/custom-menu" element={<CustomDomainMenu />} />
               <Route path="/dashboard" element={
                 <ProtectedRoute>
                   <Dashboard />
