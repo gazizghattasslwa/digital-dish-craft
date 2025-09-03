@@ -396,6 +396,13 @@ export default function MinimalRestaurantManagement() {
               Currencies
             </TabsTrigger>
             <TabsTrigger 
+              value="domain" 
+              className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-primary rounded-none border-b-2 border-transparent px-4 py-3 transition-base"
+            >
+              <Globe className="w-4 h-4 mr-2" />
+              Domain
+            </TabsTrigger>
+            <TabsTrigger 
               value="preview" 
               className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-primary rounded-none border-b-2 border-transparent px-4 py-3 transition-base"
             >
