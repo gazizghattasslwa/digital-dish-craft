@@ -3,9 +3,15 @@ import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://ohutaeezxljgdrtjyxcq.supabase.co",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+const ALLOWED_ORIGINS = [
+  "https://ohutaeezxljgdrtjyxcq.supabase.co",
+  "http://localhost:3000",
+  "http://localhost:5173"
+];
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -38,10 +44,11 @@ serve(async (req) => {
     }
     const customerId = customers.data[0].id;
 
-    const origin = req.headers.get("origin") || "http://localhost:3000";
+    const origin = req.headers.get("origin");
+    const returnUrl = validateAndGetReturnUrl(origin);
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: `${origin}/dashboard`,
+      return_url: returnUrl,
     });
 
     return new Response(JSON.stringify({ url: portalSession.url }), {
@@ -55,3 +62,10 @@ serve(async (req) => {
     });
   }
 });
+
+function validateAndGetReturnUrl(origin: string | null): string {
+  if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
+    return `${ALLOWED_ORIGINS[0]}/dashboard`;
+  }
+  return `${origin}/dashboard`;
+}

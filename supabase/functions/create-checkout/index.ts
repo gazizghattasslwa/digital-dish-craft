@@ -3,9 +3,15 @@ import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://ohutaeezxljgdrtjyxcq.supabase.co",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+const ALLOWED_ORIGINS = [
+  "https://ohutaeezxljgdrtjyxcq.supabase.co",
+  "http://localhost:3000",
+  "http://localhost:5173"
+];
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -68,8 +74,8 @@ serve(async (req) => {
         },
       ],
       mode: "subscription",
-      success_url: `${req.headers.get("origin")}/dashboard?success=true`,
-      cancel_url: `${req.headers.get("origin")}/dashboard?canceled=true`,
+      success_url: validateAndGetReturnUrl(req.headers.get("origin"), "/dashboard?success=true"),
+      cancel_url: validateAndGetReturnUrl(req.headers.get("origin"), "/dashboard?canceled=true"),
     });
 
     return new Response(JSON.stringify({ url: session.url }), {
@@ -83,3 +89,10 @@ serve(async (req) => {
     });
   }
 });
+
+function validateAndGetReturnUrl(origin: string | null, path: string): string {
+  if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
+    return `${ALLOWED_ORIGINS[0]}${path}`;
+  }
+  return `${origin}${path}`;
+}

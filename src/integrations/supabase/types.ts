@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      custom_domains: {
+        Row: {
+          created_at: string
+          domain: string
+          id: string
+          restaurant_id: string
+          ssl_status: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          domain: string
+          id?: string
+          restaurant_id: string
+          ssl_status?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          id?: string
+          restaurant_id?: string
+          ssl_status?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_domains_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       menu_categories: {
         Row: {
           created_at: string

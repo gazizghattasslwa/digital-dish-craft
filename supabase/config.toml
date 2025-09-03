@@ -13,7 +13,7 @@ enabled = true
 port = 54322
 
 [functions.manage-custom-domain]
-verify_jwt = false
+verify_jwt = true
 
 [functions.resolve-custom-domain]
 verify_jwt = false
