@@ -30,7 +30,8 @@ import { CurrencyManagement } from '@/components/restaurant/CurrencyManagement';
 import { MenuManagement } from '@/components/restaurant/MenuManagement';
 import { MenuPreview } from '@/components/MenuPreview';
 import { QRCodeGenerator } from '@/components/QRCodeGenerator';
-import { QuickMenuImport } from '@/components/restaurant/QuickMenuImport';
+import { CustomDomainManagement } from '@/components/restaurant/CustomDomainManagement';
+import { MinimalMenuManagement } from '@/components/restaurant/MinimalMenuManagement';
 
 interface Restaurant {
   id: string;
@@ -411,7 +412,7 @@ export default function MinimalRestaurantManagement() {
         </TabsContent>
 
         <TabsContent value="menu" className="space-y-6">
-          <MenuManagement
+          <MinimalMenuManagement
             restaurant={restaurant}
             menuItems={menuItems}
             categories={categories}
@@ -443,6 +444,14 @@ export default function MinimalRestaurantManagement() {
 
         <TabsContent value="currencies" className="space-y-6">
           <CurrencyManagement restaurantId={id!} />
+        </TabsContent>
+
+        <TabsContent value="domain" className="space-y-6">
+          <CustomDomainManagement 
+            restaurantId={id!}
+            restaurantName={restaurant.name}
+            restaurantSlug={restaurant.slug}
+          />
         </TabsContent>
 
         <TabsContent value="preview" className="space-y-6">
