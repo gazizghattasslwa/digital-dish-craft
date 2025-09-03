@@ -481,15 +481,12 @@ export default function MinimalRestaurantManagement() {
               {previewMenuItems.length > 0 ? (
                 <div className="border border-border rounded-lg p-4 bg-muted/50">
                   <MenuPreview
-                    restaurant={{
-                      id: restaurant.id,
-                      name: restaurant.name,
-                      logo: restaurant.logo_url,
-                      primaryColor: restaurant.primary_color,
-                      secondaryColor: restaurant.secondary_color,
-                      template: restaurant.menu_template
-                    }}
                     menuItems={previewMenuItems}
+                    restaurantName={restaurant.name}
+                    colors={{
+                      primary: restaurant.primary_color,
+                      secondary: restaurant.secondary_color
+                    }}
                   />
                 </div>
               ) : (
