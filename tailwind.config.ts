@@ -68,34 +68,22 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				}
 			},
-			backgroundImage: {
-				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-secondary': 'var(--gradient-secondary)',
-				'gradient-hero': 'var(--gradient-hero)',
-				'gradient-card': 'var(--gradient-card)',
-				'gradient-accent': 'var(--gradient-accent)',
-				'gradient-surface': 'var(--gradient-surface)',
-				'gradient-glass': 'var(--gradient-glass)',
-				'gradient-aurora': 'var(--gradient-aurora)'
-			},
-			boxShadow: {
-				'primary': 'var(--shadow-primary)',
-				'secondary': 'var(--shadow-secondary)',
-				'accent': 'var(--shadow-accent)',
-				'card': 'var(--shadow-card)',
-				'floating': 'var(--shadow-floating)',
-				'glow': 'var(--shadow-glow)',
-				'premium': 'var(--shadow-premium)',
-				'glass': 'var(--shadow-glass)'
+			fontFamily: {
+				'system': [
+					'-apple-system',
+					'BlinkMacSystemFont',
+					'"Segoe UI"',
+					'Roboto',
+					'"Helvetica Neue"',
+					'Arial',
+					'sans-serif'
+				]
 			},
 			maxWidth: {
 				'8xl': '88rem'
 			},
 			transitionTimingFunction: {
-				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
-				'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-				'spring': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-				'elastic': 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
+				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
