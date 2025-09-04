@@ -1,7 +1,6 @@
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardHeader } from "./DashboardHeader";
-import { useEffect } from "react";
 
 interface BreadcrumbItem {
   label: string;
@@ -33,7 +32,7 @@ function DashboardLayoutContent({
       <DashboardSidebar restaurantId={restaurantId} />
       
       <div 
-        className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${collapsed ? "ml-16" : "ml-64"}`}>
+        className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 md:${collapsed ? "ml-16" : "ml-64"}`}>
         <DashboardHeader 
           title={title}
           description={description}
@@ -43,7 +42,7 @@ function DashboardLayoutContent({
         </DashboardHeader>
         
         <main className="flex-1 overflow-auto bg-gradient-surface">
-          <div className="container-fluid py-6">
+          <div className="container-fluid py-6 px-4 sm:px-6">
             {children}
           </div>
         </main>
@@ -54,7 +53,7 @@ function DashboardLayoutContent({
 
 export function DashboardLayout(props: DashboardLayoutProps) {
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider>
       <DashboardLayoutContent {...props} />
     </SidebarProvider>
   );

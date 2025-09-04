@@ -5,13 +5,13 @@ export const HowItWorksSection = () => {
   return (
     <section id="how-it-works" className="section-padding bg-background">
       <div className="container-fluid">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground">How It Works</h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">How It Works</h2>
+          <p className="text-md sm:text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
             Create your stunning digital menu in just a few simple steps.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {[
             {
               icon: <Upload className="w-10 h-10 text-primary" />,
@@ -34,12 +34,12 @@ export const HowItWorksSection = () => {
                 description: "Your digital menu is live! Share it on social media, your website, or anywhere you want. Update it anytime.",
             }
           ].map((step, index) => (
-            <div key={index} className="text-center p-6 rounded-lg border shadow-sm">
+            <div key={index} className="text-center p-6 rounded-lg border shadow-sm hover-lift transition-transform duration-300">
               <div className="flex justify-center items-center mb-4">
                 {step.icon}
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-2">{step.title}</h3>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm sm:text-base">
                 {step.description}
               </p>
             </div>

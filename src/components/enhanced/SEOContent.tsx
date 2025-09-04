@@ -70,7 +70,7 @@ export const SEOContent = () => {
       <section className="section-padding">
         <div className="container-fluid">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div>
+            <div className="order-2 lg:order-1">
               <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
                 <Award className="w-4 h-4 mr-2" />
                 Why Choose MenuCraft
@@ -100,44 +100,44 @@ export const SEOContent = () => {
               </Button>
             </div>
             
-            <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="relative order-1 lg:order-2">
+              <div className="grid grid-cols-2 gap-4 sm:gap-6">
                 <Card className="shadow-card hover:shadow-warm transition-all duration-300">
                   <CardContent className="p-6 text-center">
                     <div className="w-12 h-12 bg-gradient-warm rounded-xl flex items-center justify-center mx-auto mb-4">
                       <Users className="w-6 h-6 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-foreground mb-1">1000+</div>
+                    <div className="text-xl sm:text-2xl font-bold text-foreground mb-1">1000+</div>
                     <div className="text-muted-foreground text-sm">Active Restaurants</div>
                   </CardContent>
                 </Card>
                 
-                <Card className="shadow-card hover:shadow-warm transition-all duration-300 mt-8">
+                <Card className="shadow-card hover:shadow-warm transition-all duration-300 sm:mt-8">
                   <CardContent className="p-6 text-center">
                     <div className="w-12 h-12 bg-gradient-accent rounded-xl flex items-center justify-center mx-auto mb-4">
                       <TrendingUp className="w-6 h-6 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-foreground mb-1">150K+</div>
+                    <div className="text-xl sm:text-2xl font-bold text-foreground mb-1">150K+</div>
                     <div className="text-muted-foreground text-sm">Menu Views</div>
                   </CardContent>
                 </Card>
                 
-                <Card className="shadow-card hover:shadow-warm transition-all duration-300 -mt-4">
+                <Card className="shadow-card hover:shadow-warm transition-all duration-300 sm:-mt-4">
                   <CardContent className="p-6 text-center">
                     <div className="w-12 h-12 bg-gradient-warm rounded-xl flex items-center justify-center mx-auto mb-4">
                       <Clock className="w-6 h-6 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-foreground mb-1">99.9%</div>
+                    <div className="text-xl sm:text-2xl font-bold text-foreground mb-1">99.9%</div>
                     <div className="text-muted-foreground text-sm">Uptime</div>
                   </CardContent>
                 </Card>
                 
-                <Card className="shadow-card hover:shadow-warm transition-all duration-300 mt-4">
+                <Card className="shadow-card hover:shadow-warm transition-all duration-300">
                   <CardContent className="p-6 text-center">
                     <div className="w-12 h-12 bg-gradient-accent rounded-xl flex items-center justify-center mx-auto mb-4">
                       <Shield className="w-6 h-6 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-foreground mb-1">24/7</div>
+                    <div className="text-xl sm:text-2xl font-bold text-foreground mb-1">24/7</div>
                     <div className="text-muted-foreground text-sm">Support</div>
                   </CardContent>
                 </Card>
@@ -150,7 +150,7 @@ export const SEOContent = () => {
       {/* Testimonials */}
       <section className="section-padding bg-muted/30">
         <div className="container-fluid">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 sm:mb-16">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-4">
               <MessageSquare className="w-4 h-4 mr-2" />
               Customer Success Stories
@@ -163,7 +163,7 @@ export const SEOContent = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {testimonials.map((testimonial, index) => (
               <Card key={index} className="shadow-card hover:shadow-warm transition-all duration-300 hover-lift">
                 <CardContent className="p-6">
@@ -187,7 +187,7 @@ export const SEOContent = () => {
       {/* FAQ Section */}
       <section className="section-padding">
         <div className="container-fluid">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-foreground">
               Frequently Asked Questions
             </h2>

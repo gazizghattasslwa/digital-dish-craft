@@ -7,10 +7,10 @@ import {
   Crown, 
   Zap, 
   ChevronRight,
-  User
+  Menu
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +42,7 @@ export function DashboardHeader({
   const { user, signOut } = useAuth();
   const { subscriptionTier } = useSubscription();
   const navigate = useNavigate();
+  const { toggleSidebar } = useSidebar();
 
   const handleSignOut = async () => {
     await signOut();
@@ -51,15 +52,17 @@ export function DashboardHeader({
   const userInitials = user?.email?.split('@')[0]?.slice(0, 2)?.toUpperCase() || 'U';
 
   return (
-    <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-      <div className="flex h-full items-center justify-between px-6">
+    <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-30">
+      <div className="flex h-full items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-4">
-          <SidebarTrigger className="h-8 w-8" />
+          <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden">
+            <Menu className="h-6 w-6" />
+          </Button>
           
           <div className="flex flex-col">
             {/* Breadcrumbs */}
             {breadcrumbs.length > 0 && (
-              <nav className="flex items-center space-x-1 text-sm text-muted-foreground mb-1">
+              <nav className="hidden sm:flex items-center space-x-1 text-sm text-muted-foreground mb-1">
                 {breadcrumbs.map((item, index) => (
                   <div key={index} className="flex items-center">
                     {item.href ? (
@@ -81,14 +84,14 @@ export function DashboardHeader({
             )}
             
             {/* Title */}
-            <h1 className="text-xl font-semibold text-foreground">{title}</h1>
+            <h1 className="text-lg sm:text-xl font-semibold text-foreground">{title}</h1>
             {description && (
-              <p className="text-sm text-muted-foreground mt-1">{description}</p>
+              <p className="text-sm text-muted-foreground mt-1 hidden sm:block">{description}</p>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           {/* Action buttons */}
           {children}
           

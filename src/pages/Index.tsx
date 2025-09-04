@@ -95,7 +95,7 @@ const Index = () => {
                   </p>
                 </div>
                 
-                <div>
+                <div className="col-span-1 md:col-span-1">
                   <h4 className="font-semibold mb-4">Product</h4>
                   <ul className="space-y-2 text-background/80">
                     <li><a href="#features" className="hover:text-background transition-colors">Features</a></li>
@@ -105,7 +105,7 @@ const Index = () => {
                   </ul>
                 </div>
                 
-                <div>
+                <div className="col-span-1 md:col-span-1">
                   <h4 className="font-semibold mb-4">Support</h4>
                   <ul className="space-y-2 text-background/80">
                     <li><a href="#help" className="hover:text-background transition-colors">Help Center</a></li>

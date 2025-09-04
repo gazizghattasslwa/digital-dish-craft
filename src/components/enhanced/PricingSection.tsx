@@ -85,7 +85,7 @@ export const PricingSection = () => {
   return (
     <section id="pricing" className="section-padding bg-gradient-surface">
       <div className="container-fluid">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             <Crown className="w-4 h-4 mr-2" />
             Simple Pricing
@@ -99,11 +99,11 @@ export const PricingSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {plans.map((plan, index) => (
             <Card 
               key={index} 
-              className={`relative shadow-card hover:shadow-primary transition-all duration-300 hover-lift ${
+              className={`relative flex flex-col shadow-card hover:shadow-primary transition-all duration-300 hover-lift ${
                 plan.popular ? 'border-primary shadow-primary' : ''
               }`}
             >
@@ -133,8 +133,8 @@ export const PricingSection = () => {
                 <p className="text-muted-foreground text-sm">{plan.description}</p>
               </CardHeader>
 
-              <CardContent className="pt-0">
-                <ul className="space-y-3 mb-8">
+              <CardContent className="flex-grow flex flex-col pt-0">
+                <ul className="space-y-3 mb-8 flex-grow">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
                       <Check className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
@@ -145,7 +145,7 @@ export const PricingSection = () => {
 
                 <Button
                   variant={plan.buttonVariant}
-                  className={`w-full transition-all duration-300 ${
+                  className={`w-full mt-auto transition-all duration-300 ${
                     plan.popular 
                       ? 'btn-primary shadow-primary hover:shadow-glow' 
                       : 'hover:bg-primary hover:text-primary-foreground'
@@ -161,29 +161,29 @@ export const PricingSection = () => {
 
         {/* FAQ Section */}
         <div className="mt-20 text-center">
-          <h3 className="text-2xl font-bold text-foreground mb-4">
+          <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-8">
             Frequently Asked Questions
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="text-left">
+            <div className="text-left p-4 rounded-lg bg-muted/30">
               <h4 className="font-semibold text-foreground mb-2">Can I change plans anytime?</h4>
               <p className="text-muted-foreground text-sm">
                 Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately.
               </p>
             </div>
-            <div className="text-left">
+            <div className="text-left p-4 rounded-lg bg-muted/30">
               <h4 className="font-semibold text-foreground mb-2">Is there a free trial?</h4>
               <p className="text-muted-foreground text-sm">
                 Yes! Our free plan lets you create your first menu with no time limits or credit card required.
               </p>
             </div>
-            <div className="text-left">
+            <div className="text-left p-4 rounded-lg bg-muted/30">
               <h4 className="font-semibold text-foreground mb-2">What payment methods do you accept?</h4>
               <p className="text-muted-foreground text-sm">
                 We accept all major credit cards, PayPal, and bank transfers for enterprise plans.
               </p>
             </div>
-            <div className="text-left">
+            <div className="text-left p-4 rounded-lg bg-muted/30">
               <h4 className="font-semibold text-foreground mb-2">Can I cancel anytime?</h4>
               <p className="text-muted-foreground text-sm">
                 Absolutely. Cancel anytime with no penalties. Your data remains accessible during the billing period.

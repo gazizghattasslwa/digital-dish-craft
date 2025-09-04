@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Smartphone, Zap, Palette, Star, Play, CheckCircle } from "lucide-react";
+import { ArrowRight, Star, Play, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { MobileNav } from "./MobileNav";
@@ -17,11 +17,10 @@ export const EnhancedHeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900 text-white">
       {/* Background Gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black" />
 
-      
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-pulse" />
@@ -35,7 +34,7 @@ export const EnhancedHeroSection = () => {
             <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow">
               <span className="text-white font-bold text-lg">M</span>
             </div>
-            <div className="text-xl sm:text-2xl font-bold text-white">
+            <div className="text-xl sm:text-2xl font-bold">
               MenuCraft
             </div>
           </div>
@@ -44,21 +43,21 @@ export const EnhancedHeroSection = () => {
           <div className="hidden md:flex gap-2 sm:gap-4 items-center">
             <Button 
               variant="ghost" 
-              className="text-white hover:bg-white/10 text-sm sm:text-base transition-spring"
+              className="hover:bg-white/10 text-sm sm:text-base transition-spring"
               onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Features
             </Button>
             <Button 
               variant="ghost" 
-              className="text-white hover:bg-white/10 text-sm sm:text-base transition-spring"
+              className="hover:bg-white/10 text-sm sm:text-base transition-spring"
               onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
             >
               How It Works
             </Button>
             <Button 
               variant="ghost" 
-              className="text-white hover:bg-white/10 text-sm sm:text-base transition-spring"
+              className="hover:bg-white/10 text-sm sm:text-base transition-spring"
               onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Pricing
@@ -66,7 +65,7 @@ export const EnhancedHeroSection = () => {
             {user ? (
               <Button 
                 variant="ghost" 
-                className="text-white hover:bg-white/10 text-sm sm:text-base transition-spring"
+                className="hover:bg-white/10 text-sm sm:text-base transition-spring"
                 onClick={() => navigate('/dashboard')}
               >
                 Dashboard
@@ -75,7 +74,7 @@ export const EnhancedHeroSection = () => {
               <>
                 <Button 
                   variant="ghost" 
-                  className="text-white hover:bg-white/10 text-sm sm:text-base px-3 sm:px-4 transition-spring"
+                  className="hover:bg-white/10 text-sm sm:text-base px-3 sm:px-4 transition-spring"
                   onClick={() => navigate('/auth?tab=signin')}
                 >
                   Sign In
@@ -96,8 +95,8 @@ export const EnhancedHeroSection = () => {
       </nav>
       
       {/* Main Content */}
-      <div className="relative z-10 container-fluid text-center">
-        <div className="max-w-5xl mx-auto space-y-8">
+      <div className="relative z-10 container-fluid text-center mt-20 sm:mt-0">
+        <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
           {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 rounded-full glass-card text-white text-sm font-medium backdrop-blur-md">
             <Star className="w-4 h-4 mr-2 text-accent" />
@@ -105,7 +104,7 @@ export const EnhancedHeroSection = () => {
           </div>
           
           {/* Main Heading */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight">
             Your Menu, Reimagined.
             <span className="block text-gradient mt-2">
               Instantly.
@@ -113,17 +112,17 @@ export const EnhancedHeroSection = () => {
           </h1>
           
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-md sm:text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
             Go from a static PDF to a dynamic, interactive digital menu that customers love. 
             Upload your menu, customize your brand, and publish in minutes.
           </p>
           
           {/* Benefits List */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-white/90 text-sm sm:text-base">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 sm:gap-6 text-white/90 text-xs sm:text-base">
             {[
               "AI-Powered Menu Extraction",
-              "Beautiful, Customizable Templates", 
-              "Instant QR Code Generation",
+              "Customizable Templates", 
+              "QR Code Generation",
               "Real-Time Updates"
             ].map((benefit, index) => (
               <div key={index} className="flex items-center">
@@ -134,10 +133,10 @@ export const EnhancedHeroSection = () => {
           </div>
           
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
             <Button 
               size="lg" 
-              className="text-lg px-8 py-6 btn-primary hover-lift"
+              className="w-full sm:w-auto text-lg px-8 py-6 btn-primary hover-lift"
               onClick={handleGetStarted}
             >
               {user ? 'Go to Dashboard' : 'Create Your Menu Now'}
@@ -146,7 +145,7 @@ export const EnhancedHeroSection = () => {
             <Button 
               variant="outline" 
               size="lg" 
-              className="text-lg px-8 py-6 border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-spring backdrop-blur-sm"
+              className="w-full sm:w-auto text-lg px-8 py-6 border-white/30 hover:bg-white/10 hover:border-white/50 transition-spring backdrop-blur-sm"
               onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Play className="mr-2 h-5 w-5" />
@@ -157,7 +156,7 @@ export const EnhancedHeroSection = () => {
       </div>
       
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block">
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse" />
         </div>
