@@ -1,6 +1,7 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardHeader } from "./DashboardHeader";
+import { useEffect } from "react";
 
 interface BreadcrumbItem {
   label: string;
@@ -16,35 +17,45 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-export function DashboardLayout({
+function DashboardLayoutContent({
   title,
   description,
   breadcrumbs,
   restaurantId,
   headerActions,
-  children
+  children,
 }: DashboardLayoutProps) {
+  const { state } = useSidebar();
+  const collapsed = state === 'collapsed';
+
+  return (
+    <div className="min-h-screen flex w-full bg-background">
+      <DashboardSidebar restaurantId={restaurantId} />
+      
+      <div 
+        className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${collapsed ? "ml-16" : "ml-64"}`}>
+        <DashboardHeader 
+          title={title}
+          description={description}
+          breadcrumbs={breadcrumbs}
+        >
+          {headerActions}
+        </DashboardHeader>
+        
+        <main className="flex-1 overflow-auto bg-gradient-surface">
+          <div className="container-fluid py-6">
+            {children}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+export function DashboardLayout(props: DashboardLayoutProps) {
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full bg-background">
-        <DashboardSidebar restaurantId={restaurantId} />
-        
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <DashboardHeader 
-            title={title}
-            description={description}
-            breadcrumbs={breadcrumbs}
-          >
-            {headerActions}
-          </DashboardHeader>
-          
-          <main className="flex-1 overflow-auto bg-gradient-surface">
-            <div className="container-fluid py-6">
-              {children}
-            </div>
-          </main>
-        </div>
-      </div>
+      <DashboardLayoutContent {...props} />
     </SidebarProvider>
   );
 }

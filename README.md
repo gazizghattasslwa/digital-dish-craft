@@ -1,4 +1,4 @@
-# Welcome to your Lovable project
+git # Welcome to your Lovable project
 
 ## Project info
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSubscription } from "@/contexts/SubscriptionContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export interface UsageRestrictions {
   maxRestaurants: number;
@@ -13,6 +14,13 @@ export interface UsageRestrictions {
 export interface UsageStats {
   restaurantCount: number;
   menuItemCount: number;
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return String(error);
 }
 
 export const useUsageRestrictions = () => {
@@ -91,7 +99,7 @@ export const useUsageRestrictions = () => {
         menuItemCount,
       });
     } catch (error) {
-      console.error('Error fetching usage stats:', error);
+      toast.error("Error fetching usage stats: " + getErrorMessage(error));
     } finally {
       setLoading(false);
     }

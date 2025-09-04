@@ -53,6 +53,13 @@ interface MenuItem {
   };
 }
 
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return String(error);
+}
+
 export const MinimalDashboard = () => {
   const { user } = useAuth();
   const { subscriptionTier, subscribed } = useSubscription();
@@ -112,8 +119,8 @@ export const MinimalDashboard = () => {
       })) || [];
       
       setMenuItems(processedMenuItems);
-    } catch (error: any) {
-      toast.error('Error loading data: ' + error.message);
+    } catch (error) {
+      toast.error('Error loading data: ' + getErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -429,89 +436,78 @@ export const MinimalDashboard = () => {
             <div className={
               viewMode === 'grid' 
                 ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" 
-                : "space-y-4"
+                : "space-y-2"
             }>
               {restaurants.map((restaurant) => (
                 <Card 
                   key={restaurant.id} 
-                  className="hover-card cursor-pointer group"
+                  className={viewMode === 'grid' 
+                    ? "bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 cursor-pointer"
+                    : "bg-white rounded-lg shadow-sm cursor-pointer"
+                  }
                   onClick={() => navigate(`/restaurant/${restaurant.id}`)}
                 >
-                  <CardContent className={viewMode === 'list' ? 'p-4' : 'p-6'}>
-                    <div className={`flex items-center ${viewMode === 'list' ? 'justify-between' : 'mb-4'}`}>
-                      <div className="flex items-center space-x-3">
-                        <div 
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-white"
-                          style={{ backgroundColor: restaurant.primary_color }}
-                        >
+                  {viewMode === 'grid' ? (
+                    <>
+                      <CardHeader className="p-0">
+                        <div className="h-40 bg-gray-200 flex items-center justify-center" style={{ backgroundColor: restaurant.primary_color }}>
                           {restaurant.logo_url ? (
-                            <img 
-                              src={restaurant.logo_url} 
-                              alt={`${restaurant.name} logo`}
-                              className="w-8 h-8 object-cover rounded"
-                            />
+                            <img src={restaurant.logo_url} alt={`${restaurant.name} logo`} className="h-20 w-20 object-contain rounded-full bg-white p-2 shadow-md" />
                           ) : (
-                            <Store className="w-6 h-6" />
+                            <Store className="h-16 w-16 text-white" />
                           )}
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold truncate">{restaurant.name}</h3>
-                            {restaurant.slug && (
-                              <Badge className="status-active text-xs">Live</Badge>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-xl font-bold truncate">{restaurant.name}</h3>
+                          {restaurant.slug && (
+                            <Badge className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Live</Badge>
+                          )}
+                        </div>
+                        {restaurant.description && (
+                          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{restaurant.description}</p>
+                        )}
+                        <div className="flex items-center text-sm text-gray-500">
+                          <Clock className="w-4 h-4 mr-2" />
+                          {formatDate(restaurant.created_at)}
+                        </div>
+                      </CardContent>
+                    </>
+                  ) : (
+                    <CardContent className="p-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div 
+                            className="w-10 h-10 rounded-lg flex items-center justify-center text-white"
+                            style={{ backgroundColor: restaurant.primary_color }}
+                          >
+                            {restaurant.logo_url ? (
+                              <img 
+                                src={restaurant.logo_url} 
+                                alt={`${restaurant.name} logo`}
+                                className="w-6 h-6 object-cover rounded"
+                              />
+                            ) : (
+                              <Store className="w-5 h-5" />
                             )}
                           </div>
-                          {restaurant.description && viewMode === 'grid' && (
-                            <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-                              {restaurant.description}
+                          <div>
+                            <h4 className="font-semibold text-sm">{restaurant.name}</h4>
+                            <p className="text-xs text-muted-foreground">
+                              {formatDate(restaurant.created_at)}
                             </p>
-                          )}
-                          <div className="flex items-center text-xs text-muted-foreground">
-                            <Clock className="w-3 h-3 mr-1" />
-                            {formatDate(restaurant.created_at)}
                           </div>
                         </div>
-                      </div>
-                      
-                      {viewMode === 'list' && (
-                        <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-base" />
-                      )}
-                    </div>
-                    
-                    {viewMode === 'grid' && (
-                      <div className="flex items-center justify-between pt-4 border-t border-border">
-                        <div className="flex gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 text-xs"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/restaurant/${restaurant.id}`);
-                            }}
-                          >
-                            <MenuIcon className="w-3 h-3 mr-1" />
-                            Manage
-                          </Button>
+                        <div className="flex items-center space-x-2">
                           {restaurant.slug && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 text-xs"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                window.open(`/menu/${restaurant.slug}`, '_blank');
-                              }}
-                            >
-                              <Eye className="w-3 h-3 mr-1" />
-                              View
-                            </Button>
+                            <Badge className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Live</Badge>
                           )}
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
                         </div>
-                        <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-base" />
                       </div>
-                    )}
-                  </CardContent>
+                    </CardContent>
+                  )}
                 </Card>
               ))}
             </div>

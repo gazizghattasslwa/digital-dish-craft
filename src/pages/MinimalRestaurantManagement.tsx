@@ -33,6 +33,7 @@ import { QRCodeGenerator } from '@/components/QRCodeGenerator';
 import { CustomDomainManagement } from '@/components/restaurant/CustomDomainManagement';
 import { MinimalMenuManagement } from '@/components/restaurant/MinimalMenuManagement';
 import QuickMenuImport from '@/components/restaurant/QuickMenuImport';
+import { QRCodeTab } from '@/components/restaurant/QRCodeTab';
 
 interface Restaurant {
   id: string;
@@ -67,6 +68,13 @@ interface MenuCategory {
   name: string;
   description: string;
   display_order: number;
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return String(error);
 }
 
 export default function MinimalRestaurantManagement() {
@@ -146,10 +154,10 @@ export default function MinimalRestaurantManagement() {
       if (itemsError) throw itemsError;
       setMenuItems(itemsData || []);
 
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error loading restaurant",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     } finally {
@@ -187,6 +195,7 @@ export default function MinimalRestaurantManagement() {
       case 'branding': return 'Branding & Colors';
       case 'languages': return 'Language Management';
       case 'currencies': return 'Currency Management';
+      case 'qrcode': return 'QR Code Generator';
       case 'preview': return 'Menu Preview';
       default: return 'Restaurant Management';
     }
@@ -261,15 +270,7 @@ export default function MinimalRestaurantManagement() {
         <div className="flex gap-2 flex-wrap">
           {restaurant.slug && (
             <>
-              <div className="flex items-center">
-                <QRCodeGenerator 
-                  url={generatePublicUrl() || ''}
-                  restaurantName={restaurant.name}
-                  primaryColor={restaurant.primary_color}
-                  secondaryColor={restaurant.secondary_color}
-                  logoUrl={restaurant.logo_url}
-                />
-              </div>
+              <QRCodeGenerator onGenerate={() => setActiveTab('qrcode')} />
               <Button 
                 variant="outline" 
                 size="sm"
@@ -403,6 +404,13 @@ export default function MinimalRestaurantManagement() {
               Domain
             </TabsTrigger>
             <TabsTrigger 
+              value="qrcode" 
+              className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-primary rounded-none border-b-2 border-transparent px-4 py-3 transition-base"
+            >
+              <QrCode className="w-4 h-4 mr-2" />
+              QR Code
+            </TabsTrigger>
+            <TabsTrigger 
               value="preview" 
               className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-primary rounded-none border-b-2 border-transparent px-4 py-3 transition-base"
             >
@@ -459,6 +467,16 @@ export default function MinimalRestaurantManagement() {
             restaurantId={id!}
             restaurantName={restaurant.name}
             restaurantSlug={restaurant.slug}
+          />
+        </TabsContent>
+
+        <TabsContent value="qrcode" className="space-y-6">
+          <QRCodeTab
+            url={generatePublicUrl() || ''}
+            restaurantName={restaurant.name}
+            primaryColor={restaurant.primary_color}
+            secondaryColor={restaurant.secondary_color}
+            logoUrl={restaurant.logo_url}
           />
         </TabsContent>
 

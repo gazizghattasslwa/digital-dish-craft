@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet";
 import { useAuth } from "@/contexts/AuthContext";
 import { EnhancedHeroSection } from "@/components/enhanced/EnhancedHeroSection";
 import { FeaturesSection } from "@/components/enhanced/FeaturesSection";
+import { HowItWorksSection } from "@/components/enhanced/HowItWorksSection";
+import { DashboardSamples } from "@/components/enhanced/DashboardSamples";
 import { PricingSection } from "@/components/enhanced/PricingSection";
 import { SEOContent } from "@/components/enhanced/SEOContent";
 import { MenuBuilder, MenuItem } from "@/components/MenuBuilder";
@@ -71,6 +73,8 @@ const Index = () => {
         <div className="min-h-screen bg-gradient-surface">
           <EnhancedHeroSection />
           <FeaturesSection />
+          <HowItWorksSection />
+          <DashboardSamples />
           <PricingSection />
           <SEOContent />
           
@@ -95,6 +99,7 @@ const Index = () => {
                   <h4 className="font-semibold mb-4">Product</h4>
                   <ul className="space-y-2 text-background/80">
                     <li><a href="#features" className="hover:text-background transition-colors">Features</a></li>
+                    <li><a href="#how-it-works" className="hover:text-background transition-colors">How It Works</a></li>
                     <li><a href="#pricing" className="hover:text-background transition-colors">Pricing</a></li>
                     <li><a href="#examples" className="hover:text-background transition-colors">Examples</a></li>
                   </ul>

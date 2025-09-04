@@ -3,7 +3,6 @@ import { ArrowRight, Smartphone, Zap, Palette, Star, Play, CheckCircle } from "l
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { MobileNav } from "./MobileNav";
-import heroImage from "@/assets/hero-restaurant-menu.jpg";
 
 export const EnhancedHeroSection = () => {
   const navigate = useNavigate();
@@ -18,17 +17,10 @@ export const EnhancedHeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
-      {/* Background Image with Enhanced Overlay */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt="Professional restaurant digital menu interface showcasing modern design and mobile optimization"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent" />
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black" />
+
       
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -56,6 +48,13 @@ export const EnhancedHeroSection = () => {
               onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Features
+            </Button>
+            <Button 
+              variant="ghost" 
+              className="text-white hover:bg-white/10 text-sm sm:text-base transition-spring"
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              How It Works
             </Button>
             <Button 
               variant="ghost" 
@@ -107,25 +106,25 @@ export const EnhancedHeroSection = () => {
           
           {/* Main Heading */}
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight">
-            Transform Your Menu Into a
+            Your Menu, Reimagined.
             <span className="block text-gradient mt-2">
-              Digital Experience
+              Instantly.
             </span>
           </h1>
           
           {/* Subtitle */}
           <p className="text-lg sm:text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
-            Create stunning, mobile-optimized digital menus in minutes. Generate QR codes, 
-            enable instant updates, and provide your customers with a seamless dining experience.
+            Go from a static PDF to a dynamic, interactive digital menu that customers love. 
+            Upload your menu, customize your brand, and publish in minutes.
           </p>
           
           {/* Benefits List */}
           <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-white/90 text-sm sm:text-base">
             {[
-              "No Monthly Fees",
-              "Instant QR Codes", 
-              "Mobile Optimized",
-              "Easy Updates"
+              "AI-Powered Menu Extraction",
+              "Beautiful, Customizable Templates", 
+              "Instant QR Code Generation",
+              "Real-Time Updates"
             ].map((benefit, index) => (
               <div key={index} className="flex items-center">
                 <CheckCircle className="w-4 h-4 mr-2 text-accent" />
@@ -141,49 +140,18 @@ export const EnhancedHeroSection = () => {
               className="text-lg px-8 py-6 btn-primary hover-lift"
               onClick={handleGetStarted}
             >
-              {user ? 'Go to Dashboard' : 'Start Creating Free'}
+              {user ? 'Go to Dashboard' : 'Create Your Menu Now'}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
               className="text-lg px-8 py-6 border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-spring backdrop-blur-sm"
-              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Play className="mr-2 h-5 w-5" />
-              View Pricing
+              See How It Works
             </Button>
-          </div>
-          
-          {/* Features Preview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-16 max-w-5xl mx-auto">
-            {[
-              {
-                icon: <Smartphone className="w-8 h-8" />,
-                title: "Mobile-First Design",
-                description: "Perfect on every screen size and device"
-              },
-              {
-                icon: <Zap className="w-8 h-8" />,
-                title: "Instant Updates",
-                description: "Change prices and menu items in real-time"
-              },
-              {
-                icon: <Palette className="w-8 h-8" />,
-                title: "Brand Customization",
-                description: "Match your restaurant's unique style and colors"
-              }
-            ].map((feature, index) => (
-              <div key={index} className="glass-card rounded-xl p-6 hover-lift backdrop-blur-md">
-                <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-soft">
-                  <div className="text-white">
-                    {feature.icon}
-                  </div>
-                </div>
-                <h3 className="text-white font-semibold text-lg mb-2">{feature.title}</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
           </div>
         </div>
       </div>

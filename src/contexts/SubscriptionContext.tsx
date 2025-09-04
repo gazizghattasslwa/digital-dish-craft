@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./AuthContext";
+import { toast } from "sonner";
 
 interface SubscriptionContextType {
   subscribed: boolean;
@@ -10,6 +11,13 @@ interface SubscriptionContextType {
   checkSubscription: () => Promise<void>;
   createCheckout: (plan: 'premium' | 'agency') => Promise<string>;
   openCustomerPortal: () => Promise<string>;
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return String(error);
 }
 
 const SubscriptionContext = createContext<SubscriptionContextType>({
@@ -46,7 +54,7 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setSubscriptionTier(data.subscription_tier || 'free');
       setSubscriptionEnd(data.subscription_end);
     } catch (error) {
-      console.error('Error checking subscription:', error);
+      toast.error("Error checking subscription: " + getErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -55,28 +63,38 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const createCheckout = async (plan: 'premium' | 'agency'): Promise<string> => {
     if (!session?.access_token) throw new Error('Not authenticated');
     
-    const { data, error } = await supabase.functions.invoke('create-checkout', {
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-      },
-      body: { plan }
-    });
-    
-    if (error) throw error;
-    return data.url;
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: { plan }
+      });
+      
+      if (error) throw error;
+      return data.url;
+    } catch (error) {
+      toast.error("Error creating checkout: " + getErrorMessage(error));
+      return '';
+    }
   };
 
   const openCustomerPortal = async (): Promise<string> => {
     if (!session?.access_token) throw new Error('Not authenticated');
     
-    const { data, error } = await supabase.functions.invoke('customer-portal', {
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-      }
-    });
-    
-    if (error) throw error;
-    return data.url;
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        }
+      });
+      
+      if (error) throw error;
+      return data.url;
+    } catch (error) {
+      toast.error("Error opening customer portal: " + getErrorMessage(error));
+      return '';
+    }
   };
 
   useEffect(() => {
