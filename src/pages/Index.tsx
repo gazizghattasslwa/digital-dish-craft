@@ -7,6 +7,10 @@ import { HowItWorksSection } from "@/components/enhanced/HowItWorksSection";
 import { DashboardSamples } from "@/components/enhanced/DashboardSamples";
 import { PricingSection } from "@/components/enhanced/PricingSection";
 import { SEOContent } from "@/components/enhanced/SEOContent";
+import { TransformSection } from "@/components/sections/TransformSection";
+import { SmartChoiceSection } from "@/components/sections/SmartChoiceSection";
+import { FAQSection } from "@/components/sections/FAQSection";
+import { EnhancedFooter } from "@/components/sections/EnhancedFooter";
 import { MenuBuilder, MenuItem } from "@/components/MenuBuilder";
 import { MenuPreview } from "@/components/MenuPreview";
 import { CustomizationPanel } from "@/components/CustomizationPanel";
@@ -36,23 +40,23 @@ const Index = () => {
     return (
       <>
         <Helmet>
-          <title>MenuCraft - Digital Restaurant Menu Builder | Create QR Code Menus</title>
+          <title>Menius - Digital Restaurant Menu Builder | Create QR Code Menus</title>
           <meta name="description" content="Create professional digital restaurant menus in minutes. Generate QR codes, enable instant updates, and provide mobile-optimized dining experiences. Free to start!" />
           <meta name="keywords" content="digital menu, restaurant menu, QR code menu, mobile menu, contactless menu, menu builder, restaurant technology" />
-          <meta property="og:title" content="MenuCraft - Transform Your Restaurant Menu Into a Digital Experience" />
+          <meta property="og:title" content="Menius - Transform Your Restaurant Menu Into a Digital Experience" />
           <meta property="og:description" content="Create stunning, mobile-optimized digital menus with QR codes, instant updates, and custom branding. Trusted by 1000+ restaurants worldwide." />
           <meta property="og:type" content="website" />
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="MenuCraft - Digital Restaurant Menu Builder" />
+          <meta name="twitter:title" content="Menius - Digital Restaurant Menu Builder" />
           <meta name="twitter:description" content="Transform your restaurant menu into a digital experience. Mobile-optimized, QR codes, instant updates. Free to start!" />
-          <link rel="canonical" href="https://menucraft.com" />
+          <link rel="canonical" href="https://menius.com" />
           
           {/* Structured Data */}
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              "name": "MenuCraft",
+              "name": "Menius",
               "description": "Digital restaurant menu builder with QR codes and mobile optimization",
               "applicationCategory": "BusinessApplication",
               "operatingSystem": "Web Browser",
@@ -74,52 +78,13 @@ const Index = () => {
           <EnhancedHeroSection />
           <FeaturesSection />
           <HowItWorksSection />
+          <SmartChoiceSection />
           <DashboardSamples />
           <PricingSection />
+          <TransformSection />
+          <FAQSection />
           <SEOContent />
-          
-          {/* Footer */}
-          <footer className="bg-foreground text-background section-padding">
-            <div className="container-fluid">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="col-span-1 md:col-span-2">
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">M</span>
-                    </div>
-                    <span className="text-2xl font-bold">MenuCraft</span>
-                  </div>
-                  <p className="text-background/80 mb-6 max-w-md leading-relaxed">
-                    Transform your restaurant menu into a digital experience. 
-                    Mobile-optimized, QR codes, instant updates, and custom branding.
-                  </p>
-                </div>
-                
-                <div className="col-span-1 md:col-span-1">
-                  <h4 className="font-semibold mb-4">Product</h4>
-                  <ul className="space-y-2 text-background/80">
-                    <li><a href="#features" className="hover:text-background transition-colors">Features</a></li>
-                    <li><a href="#how-it-works" className="hover:text-background transition-colors">How It Works</a></li>
-                    <li><a href="#pricing" className="hover:text-background transition-colors">Pricing</a></li>
-                    <li><a href="#examples" className="hover:text-background transition-colors">Examples</a></li>
-                  </ul>
-                </div>
-                
-                <div className="col-span-1 md:col-span-1">
-                  <h4 className="font-semibold mb-4">Support</h4>
-                  <ul className="space-y-2 text-background/80">
-                    <li><a href="#help" className="hover:text-background transition-colors">Help Center</a></li>
-                    <li><a href="#contact" className="hover:text-background transition-colors">Contact</a></li>
-                    <li><a href="#privacy" className="hover:text-background transition-colors">Privacy</a></li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="border-t border-background/20 mt-12 pt-8 text-center text-background/60">
-                <p>&copy; 2024 MenuCraft. All rights reserved.</p>
-              </div>
-            </div>
-          </footer>
+          <EnhancedFooter />
         </div>
       </>
     );

@@ -35,7 +35,7 @@ export const EnhancedHeroSection = () => {
               <span className="text-white font-bold text-lg">M</span>
             </div>
             <div className="text-xl sm:text-2xl font-bold">
-              MenuCraft
+              Menius
             </div>
           </div>
           
@@ -105,16 +105,15 @@ export const EnhancedHeroSection = () => {
           
           {/* Main Heading */}
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight">
-            Your Menu, Reimagined.
+            Digital Menus Made
             <span className="block text-gradient mt-2">
-              Instantly.
+              Simple
             </span>
           </h1>
           
           {/* Subtitle */}
           <p className="text-md sm:text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
-            Go from a static PDF to a dynamic, interactive digital menu that customers love. 
-            Upload your menu, customize your brand, and publish in minutes.
+            Convert your PDF menus, images, or create from scratch. Get a beautiful, mobile-friendly digital menu with QR codes in minutes.
           </p>
           
           {/* Benefits List */}
@@ -139,18 +138,32 @@ export const EnhancedHeroSection = () => {
               className="w-full sm:w-auto text-lg px-8 py-6 btn-primary hover-lift"
               onClick={handleGetStarted}
             >
-              {user ? 'Go to Dashboard' : 'Create Your Menu Now'}
+              {user ? 'Go to Dashboard' : 'Create Your Menu'}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
               className="w-full sm:w-auto text-lg px-8 py-6 border-white/30 hover:bg-white/10 hover:border-white/50 transition-spring backdrop-blur-sm"
-              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              <Play className="mr-2 h-5 w-5" />
-              See How It Works
+              View Demo
             </Button>
+          </div>
+          
+          {/* Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-16 max-w-4xl mx-auto">
+            <div className="text-center animate-fade-in">
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">1000+</div>
+              <div className="text-gray-300 text-sm sm:text-base">Active Restaurants</div>
+            </div>
+            <div className="text-center animate-fade-in" style={{ animationDelay: '200ms' }}>
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">50K+</div>
+              <div className="text-gray-300 text-sm sm:text-base">Menu Views Daily</div>
+            </div>
+            <div className="text-center animate-fade-in" style={{ animationDelay: '400ms' }}>
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">99.9%</div>
+              <div className="text-gray-300 text-sm sm:text-base">Uptime</div>
+            </div>
           </div>
         </div>
       </div>

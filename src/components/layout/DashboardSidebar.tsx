@@ -46,7 +46,7 @@ export function DashboardSidebar({ restaurantId }: DashboardSidebarProps) {
   const currentPath = location.pathname + location.search;
   const { state, toggleSidebar } = useSidebar();
   const collapsed = state === 'collapsed';
-  const open = state === 'open';
+  const open = state === 'expanded';
 
   const isActive = (path: string) => {
     if (path.includes('?')) {
@@ -80,7 +80,7 @@ export function DashboardSidebar({ restaurantId }: DashboardSidebarProps) {
                   <div className="w-8 h-8 bg-gradient-warm rounded-lg flex items-center justify-center">
                       <Store className="w-5 h-5 text-white" />
                   </div>
-                  <h2 className="font-bold text-lg">MenuCraft</h2>
+                  <h2 className="font-bold text-lg">Menius</h2>
               </div>
             )}
             <Button variant="ghost" size="icon" onClick={toggleSidebar} className="hidden md:flex hover:bg-gray-700">
