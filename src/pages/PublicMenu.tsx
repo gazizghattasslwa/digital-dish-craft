@@ -13,10 +13,8 @@ interface Restaurant {
   logo_url: string;
   primary_color: string;
   secondary_color: string;
-  address: string;
-  phone: string;
-  website: string;
   menu_template: string;
+  slug: string;
 }
 
 interface MenuItem {
@@ -68,31 +66,7 @@ const MenuTemplateClassic = ({ restaurant, menuItems, categories }: {
       )}
     </div>
 
-    {/* Restaurant Info */}
-    {(restaurant.address || restaurant.phone || restaurant.website) && (
-      <div className="flex flex-wrap justify-center gap-6 mb-12 text-sm">
-        {restaurant.address && (
-          <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4" style={{ color: restaurant.primary_color }} />
-            <span>{restaurant.address}</span>
-          </div>
-        )}
-        {restaurant.phone && (
-          <div className="flex items-center gap-2">
-            <Phone className="w-4 h-4" style={{ color: restaurant.primary_color }} />
-            <span>{restaurant.phone}</span>
-          </div>
-        )}
-        {restaurant.website && (
-          <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4" style={{ color: restaurant.primary_color }} />
-            <a href={restaurant.website} target="_blank" rel="noopener noreferrer" className="hover:underline">
-              Website
-            </a>
-          </div>
-        )}
-      </div>
-    )}
+    {/* Restaurant info section removed for security - contact info is no longer publicly accessible */}
 
     {/* Menu Categories */}
     <div className="space-y-12">
@@ -467,9 +441,9 @@ export default function PublicMenu() {
       console.log('Fetching menu data for slug:', slug);
 
       try {
-        // Fetch restaurant by slug
+        // Fetch restaurant by slug using secure public view
         const { data: restaurantData, error: restaurantError } = await supabase
-          .from('restaurants')
+          .from('restaurants_public')
           .select('*')
           .eq('slug', slug)
           .maybeSingle();
