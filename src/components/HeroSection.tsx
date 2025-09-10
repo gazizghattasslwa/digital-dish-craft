@@ -32,7 +32,7 @@ export const HeroSection = () => {
       <nav className="absolute top-0 left-0 right-0 z-20 p-4 sm:p-6">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-lg sm:text-2xl font-bold text-white">
-            MenuCraft
+            Menura
           </div>
           <div className="flex gap-2 sm:gap-4">
             {user ? (
