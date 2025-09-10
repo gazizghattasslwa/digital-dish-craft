@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, QrCode } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-
 export const NewHeroSection = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-
+  const {
+    user
+  } = useAuth();
   const handleGetStarted = () => {
     if (user) {
       navigate('/dashboard');
@@ -14,9 +14,7 @@ export const NewHeroSection = () => {
       navigate('/auth?tab=signup');
     }
   };
-
-  return (
-    <section className="min-h-screen bg-background">
+  return <section className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="relative z-20 p-4 sm:p-6">
         <div className="container mx-auto flex justify-between items-center">
@@ -31,31 +29,16 @@ export const NewHeroSection = () => {
             <a href="#contact" className="text-foreground hover:text-primary transition-colors">Contact</a>
           </div>
           <div className="flex gap-2 sm:gap-4">
-            {user ? (
-              <Button 
-                variant="outline" 
-                className="text-foreground border-border"
-                onClick={() => navigate('/dashboard')}
-              >
+            {user ? <Button variant="outline" className="text-foreground border-border" onClick={() => navigate('/dashboard')}>
                 Dashboard
-              </Button>
-            ) : (
-              <>
-                <Button 
-                  variant="outline" 
-                  className="text-foreground border-border"
-                  onClick={() => navigate('/auth?tab=signin')}
-                >
+              </Button> : <>
+                <Button variant="outline" onClick={() => navigate('/auth?tab=signin')} className="border-border rounded-full text-slate-50 bg-black">
                   Login
                 </Button>
-                <Button 
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                  onClick={() => navigate('/auth?tab=signup')}
-                >
+                <Button onClick={() => navigate('/auth?tab=signup')} className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full">
                   Build your menu for free
                 </Button>
-              </>
-            )}
+              </>}
           </div>
         </div>
       </nav>
@@ -77,32 +60,24 @@ export const NewHeroSection = () => {
           
           {/* Center - Main Content */}
           <div className="lg:w-1/2 text-center lg:text-left">
-            <div className="inline-block bg-accent/20 text-primary px-3 py-1 rounded-full text-sm font-medium mb-6">
+            <div className="inline-block text-primary px-3 py-1 rounded-full text-sm font-medium mb-6 bg-purple-100">
               Transform Your Restaurant Menu
             </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight text-center lg:text-5xl">
               Digital Menus Made{" "}
               <span className="text-accent">Simple</span>
             </h1>
             
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-2xl">
+            <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-2xl text-center">
               Convert your PDF menus, images, or create from scratch. Get a beautiful, mobile-friendly digital menu with QR codes in minutes.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button 
-                size="lg" 
-                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 text-lg"
-                onClick={handleGetStarted}
-              >
+              <Button size="lg" onClick={handleGetStarted} className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 text-lg rounded-3xl">
                 Create Your Menu
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="border-border text-foreground hover:bg-muted px-8 py-4 text-lg"
-              >
+              <Button variant="outline" size="lg" className="border-border px-8 py-4 text-lg rounded-full bg-black text-white">
                 View Demo
               </Button>
             </div>
@@ -147,6 +122,5 @@ export const NewHeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
